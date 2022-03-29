@@ -2,6 +2,7 @@ package edu.uoc.demo1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,12 +57,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (CheckPwd() && CheckUser() ){
-                    //TODO.. connect to webservice or go to another view
+                    Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                    intent.putExtra("user", user.getText().toString());
+                    intent.putExtra("pwd", pwd.getText().toString());
+                    startActivity(intent);
                 }
             }
         });
 
     }
+
     private boolean CheckPwd(){
         String s_pwd = pwd.getText().toString();
 
