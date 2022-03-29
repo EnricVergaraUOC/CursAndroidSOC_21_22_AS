@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText user;
     private EditText pwd;
+
+    private TextView errorUser;
+    private TextView errorPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +24,23 @@ public class MainActivity extends AppCompatActivity {
         Button checkCredentials = findViewById(R.id.checkCredentials);
         user = findViewById(R.id.user);
         pwd = findViewById(R.id.pwd);
+
+        errorUser = findViewById(R.id.error_user);
+        errorPwd = findViewById(R.id.error_pwd);
+
+        errorUser.setVisibility(View.INVISIBLE);
+        errorPwd.setVisibility(View.INVISIBLE);
+
         checkCredentials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String s_pwd = pwd.getText().toString();
                 if (s_pwd.length() <= 5){
-                    Toast.makeText(getApplicationContext(), "Error: el pwd debe ser como mínimo de 6 caracteres", Toast.LENGTH_LONG).show();//display the text of button1
+                    errorPwd.setVisibility(View.VISIBLE);
+                    errorPwd.setText("El password debe estar formado por más de 5 caracteres");
+                }else{
+                    errorPwd.setVisibility(View.INVISIBLE);
                 }
-
-
             }
         });
 
