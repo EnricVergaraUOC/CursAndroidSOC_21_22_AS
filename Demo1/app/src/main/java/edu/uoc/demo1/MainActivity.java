@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText user;
@@ -16,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView errorUser;
     private TextView errorPwd;
-
+    private Button checkCredentials;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button checkCredentials = findViewById(R.id.checkCredentials);
+        checkCredentials = findViewById(R.id.checkCredentials);
         user = findViewById(R.id.user);
         pwd = findViewById(R.id.pwd);
 
@@ -31,16 +34,55 @@ public class MainActivity extends AppCompatActivity {
         errorUser.setVisibility(View.INVISIBLE);
         errorPwd.setVisibility(View.INVISIBLE);
 
+        user.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // code to execute when EditText loses focus
+                    Toast.makeText(getApplicationContext(), "Simple Button 1", Toast.LENGTH_LONG).show();//display the text of button1
+                }
+            }
+        });
+
         checkCredentials.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String s_pwd = pwd.getText().toString();
+
+
+                char[] chars = s_pwd.toCharArray();
+                boolean containsDigit = false;
+                for(char c : chars){
+                    if(Character.isDigit(c)){
+                        containsDigit = true;
+                    }
+                }
+                //Check pwd:
                 if (s_pwd.length() <= 5){
                     errorPwd.setVisibility(View.VISIBLE);
                     errorPwd.setText("El password debe estar formado por más de 5 caracteres");
-                }else{
-                    errorPwd.setVisibility(View.INVISIBLE);
+                }else if (!containsDigit) {
+                    errorPwd.setVisibility(View.VISIBLE);
+                    errorPwd.setText("El password debe contener al menos un número");
+                } else{
+                     errorPwd.setVisibility(View.INVISIBLE);
                 }
+
+                //Check email:
+                String s_user = user.getText().toString();
+                String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+                Pattern p = Pattern.compile(regex);
+                Matcher m = p.matcher(s_user);
+                if (!m.matches()) {
+                    errorUser.setVisibility(View.VISIBLE);
+                    errorUser.setText("Debe ser un email con formato válido!");
+                } else{
+                    errorUser.setVisibility(View.INVISIBLE);
+                }
+
+
+                //checkCredentials.setVisibility(View.INVISIBLE);
             }
         });
 
