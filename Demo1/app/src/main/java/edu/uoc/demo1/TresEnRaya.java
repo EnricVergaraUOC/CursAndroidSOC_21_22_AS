@@ -12,7 +12,15 @@ public class TresEnRaya extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tres_en_raya);
-        myButton[0][0] = findViewById(R.id.button10);
+
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 3; j++){
+                String buttonID = "button"+i+j;
+                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+                myButton[i][j] = findViewById(resID);
+            }
+        }
+
     }
 
 }

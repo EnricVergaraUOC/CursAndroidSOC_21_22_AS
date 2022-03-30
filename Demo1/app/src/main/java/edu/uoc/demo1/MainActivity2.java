@@ -30,7 +30,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent data = new Intent();
                 Float value = new Float(10.5);
-                data.putExtra("ResultData", value);
+
+                data.putExtra("ResultData", 10);
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }

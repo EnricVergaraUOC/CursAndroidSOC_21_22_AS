@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                     intent.putExtra("user", user.getText().toString());
                     intent.putExtra("pwd", pwd.getText().toString());
-
                     //startActivityForResult(intent, REQUEST_ACTIVITY2);
 
                     someActivityResultLauncher.launch(intent);
