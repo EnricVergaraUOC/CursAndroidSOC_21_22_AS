@@ -1,7 +1,12 @@
 package edu.uoc.demo1;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_ACTIVITY2 = 0;
 
     private EditText user;
     private EditText pwd;
@@ -60,13 +67,30 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                     intent.putExtra("user", user.getText().toString());
                     intent.putExtra("pwd", pwd.getText().toString());
-                    startActivity(intent);
+
+                    //startActivityForResult(intent, REQUEST_ACTIVITY2);
+
+                    someActivityResultLauncher.launch(intent);
                 }
             }
         });
-
     }
 
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+
+                        float value = data.getFloatExtra("ResultData", -1);
+                        checkCredentials.setText("Valor " + value);
+                    }
+                }
+            });
     private boolean CheckPwd(){
         String s_pwd = pwd.getText().toString();
 
@@ -108,6 +132,19 @@ public class MainActivity extends AppCompatActivity {
             errorUser.setVisibility(View.INVISIBLE);
             allIsCorrect = true;
         }
-        return allIsCorrect;
+        //return allIsCorrect;
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_ACTIVITY2) {
+            float value = data.getIntExtra("ResultData", -1);
+            checkCredentials.setText("Valor " + value);
+        }
+
+
     }
 }
