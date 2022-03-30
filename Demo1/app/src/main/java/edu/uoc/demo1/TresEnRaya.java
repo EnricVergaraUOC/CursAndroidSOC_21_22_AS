@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class TresEnRaya extends AppCompatActivity {
     private static final String EMPTY = "";
     private Button[][] board = new Button[3][3];
     private boolean turnOfX = false;
+    private TextView userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tres_en_raya);
+
+        userInfo = findViewById(R.id.userInfo);
+        UpdateUserTurn();
 
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
@@ -33,10 +38,10 @@ public class TresEnRaya extends AppCompatActivity {
                                 btn.setText("O");
                             }
 
+                            CheckWinner();
                         }
-
-
                         turnOfX = !turnOfX;
+                        UpdateUserTurn();
                     }
                 });
             }
@@ -45,6 +50,17 @@ public class TresEnRaya extends AppCompatActivity {
 
 
         ResetBoard();
+    }
+
+    private void UpdateUserTurn(){
+        if (turnOfX){
+            userInfo.setText("Turno de las X");
+        }else{
+            userInfo.setText("Turno de las O");
+        }
+    }
+    private void CheckWinner(){
+
     }
 
     private void ResetBoard(){
