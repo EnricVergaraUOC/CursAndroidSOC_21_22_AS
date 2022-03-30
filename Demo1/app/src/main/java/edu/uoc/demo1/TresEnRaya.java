@@ -31,6 +31,7 @@ public class TresEnRaya extends AppCompatActivity {
                     public void onClick(View v) {
                         Button btn = (Button) v;
                         String value = btn.getText().toString();
+                        boolean winner = false;
                         if (value.compareTo(EMPTY) == 0){
                             if (turnOfX){
                                 btn.setText("X");
@@ -38,10 +39,13 @@ public class TresEnRaya extends AppCompatActivity {
                                 btn.setText("O");
                             }
 
-                            CheckWinner();
+                            winner = CheckWinner();
                         }
-                        turnOfX = !turnOfX;
-                        UpdateUserTurn();
+                        if (!winner){
+                            turnOfX = !turnOfX;
+                            UpdateUserTurn();
+                        }
+
                     }
                 });
             }
@@ -59,8 +63,40 @@ public class TresEnRaya extends AppCompatActivity {
             userInfo.setText("Turno de las O");
         }
     }
-    private void CheckWinner(){
+    private boolean CheckWinner(){
+        boolean winner = false;
+        String[][] field = new String[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                field[i][j] = board[i][j].getText().toString();
+            }
+        }
 
+        for (int i = 0; i < 3; i++) {
+            if (field[i][0].equals(field[i][1])
+                    && field[i][0].equals(field[i][2])
+                    && !field[i][0].equals(EMPTY)) {
+                winner  = true;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (field[0][i].equals(field[1][i])
+                    && field[0][i].equals(field[2][i])
+                    && !field[0][i].equals(EMPTY)) {
+                winner = true;
+            }
+        }
+
+
+        if (winner){
+            if (turnOfX) {
+                userInfo.setText("Han guanyat les X");
+            }else{
+                userInfo.setText("Han guanyat les O");
+            }
+        }
+        return winner;
     }
 
     private void ResetBoard(){
