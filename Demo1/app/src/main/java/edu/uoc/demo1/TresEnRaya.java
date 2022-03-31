@@ -2,6 +2,7 @@ package edu.uoc.demo1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,14 @@ public class TresEnRaya extends AppCompatActivity {
     private Button[][] board = new Button[3][3];
     private boolean turnOfX = false;
     private TextView userInfo;
-
+    private boolean modeIA = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tres_en_raya);
+
+        Intent intent = getIntent();
+        modeIA = intent.getBooleanExtra(Menu.AI_ENABLED, false);
 
         userInfo = findViewById(R.id.userInfo);
         UpdateUserTurn();
@@ -44,25 +48,47 @@ public class TresEnRaya extends AppCompatActivity {
                         if (!winner){
                             turnOfX = !turnOfX;
                             UpdateUserTurn();
+                            if (turnOfX && modeIA){
+                                UpdateAI();
+                            }
                         }
-
                     }
                 });
             }
         }
-
-
-
         ResetBoard();
     }
 
     private void UpdateUserTurn(){
         if (turnOfX){
-            userInfo.setText("Turno de las X");
+            if (modeIA){
+                userInfo.setText("Turno de las X (IA)");
+            }else{
+                userInfo.setText("Turno de las X");
+            }
+
         }else{
             userInfo.setText("Turno de las O");
         }
     }
+
+    private void UpdateAI(){
+        int Min = 0;
+        int Max = 2;
+
+        int randRow;
+        int randCol;
+        do{
+            randRow = Min + (int)(Math.random() * ((Max - Min) + 1));
+            randCol = Min + (int)(Math.random() * ((Max - Min) + 1));
+
+        }while(board[randRow][randCol].getText().toString().compareTo(EMPTY) != 0);
+
+
+        board[randRow][randCol].performClick();
+    }
+
+
     private boolean CheckWinner(){
         boolean winner = false;
         String[][] field = new String[3][3];
@@ -86,6 +112,17 @@ public class TresEnRaya extends AppCompatActivity {
                     && !field[0][i].equals(EMPTY)) {
                 winner = true;
             }
+        }
+        if (field[0][0].equals(field[1][1])
+                && field[0][0].equals(field[2][2])
+                && !field[0][0].equals(EMPTY)) {
+            winner =  true;
+        }
+
+        if ( field[0][2].equals(field[1][1])
+                && field[0][2].equals(field[2][0])
+                && !field[0][2].equals(EMPTY)){
+            winner =  true;
         }
 
 
