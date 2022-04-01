@@ -26,69 +26,71 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            
+
+            <ImageButton
                 android:id="@+id/button00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o"  />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:id="@+id/button10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:id="@+id/button20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                app:srcCompat="@drawable/tictactoe_cell_o" />
         </TableRow>
 
     </TableLayout>

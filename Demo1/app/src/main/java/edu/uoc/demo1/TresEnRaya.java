@@ -3,14 +3,16 @@ package edu.uoc.demo1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class TresEnRaya extends AppCompatActivity {
     private static final String EMPTY = "";
-    private Button[][] board = new Button[3][3];
+    private ImageButton[][] board = new ImageButton[3][3];
     private boolean turnOfX = false;
     private TextView userInfo;
     private boolean modeIA = false;
@@ -33,14 +35,16 @@ public class TresEnRaya extends AppCompatActivity {
                 board[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Button btn = (Button) v;
-                        String value = btn.getText().toString();
+                        ImageButton btn = (ImageButton) v;
+                        int tag = (int)btn.getTag();
                         boolean winner = false;
-                        if (value.compareTo(EMPTY) == 0){
+                        if (tag == 0){
                             if (turnOfX){
-                                btn.setText("X");
+                                btn.setImageResource(R.drawable.tictactoe_cell_x);
+                                btn.setTag(1);
                             }else{
-                                btn.setText("O");
+                                btn.setImageResource(R.drawable.tictactoe_cell_o);
+                                btn.setTag(2);
                             }
 
                             winner = CheckWinner();
@@ -78,11 +82,13 @@ public class TresEnRaya extends AppCompatActivity {
 
         int randRow;
         int randCol;
+        int tag = 0;
         do{
             randRow = Min + (int)(Math.random() * ((Max - Min) + 1));
             randCol = Min + (int)(Math.random() * ((Max - Min) + 1));
 
-        }while(board[randRow][randCol].getText().toString().compareTo(EMPTY) != 0);
+            tag = (int) board[randRow][randCol].getTag();
+        }while(tag != 0);
 
 
         board[randRow][randCol].performClick();
@@ -91,37 +97,37 @@ public class TresEnRaya extends AppCompatActivity {
 
     private boolean CheckWinner(){
         boolean winner = false;
-        String[][] field = new String[3][3];
+        int[][] status = new int[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                field[i][j] = board[i][j].getText().toString();
+                status[i][j] = (int)board[i][j].getTag();
             }
         }
 
         for (int i = 0; i < 3; i++) {
-            if (field[i][0].equals(field[i][1])
-                    && field[i][0].equals(field[i][2])
-                    && !field[i][0].equals(EMPTY)) {
+            if (status[i][0] == status[i][1]
+                    && status[i][0] == status[i][2]
+                    && status[i][0] != 0) {
                 winner  = true;
             }
         }
 
         for (int i = 0; i < 3; i++) {
-            if (field[0][i].equals(field[1][i])
-                    && field[0][i].equals(field[2][i])
-                    && !field[0][i].equals(EMPTY)) {
+            if (status[0][i] == status[1][i]
+                    && status[0][i] == status[2][i]
+                    && status[0][i] != 0) {
                 winner = true;
             }
         }
-        if (field[0][0].equals(field[1][1])
-                && field[0][0].equals(field[2][2])
-                && !field[0][0].equals(EMPTY)) {
+        if (status[0][0] == status[1][1]
+                && status[0][0] == status[2][2]
+                && status[0][0] != 0) {
             winner =  true;
         }
 
-        if ( field[0][2].equals(field[1][1])
-                && field[0][2].equals(field[2][0])
-                && !field[0][2].equals(EMPTY)){
+        if ( status[0][2] == status[1][1]
+                && status[0][2] == status[2][0]
+                && status[0][2] != 0){
             winner =  true;
         }
 
@@ -137,9 +143,11 @@ public class TresEnRaya extends AppCompatActivity {
     }
 
     private void ResetBoard(){
+
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
-                board[i][j].setText(EMPTY);
+                board[i][j].setImageResource(R.drawable.tictactoe_empty_cell);
+                board[i][j].setTag(0);
             }
         }
     }
