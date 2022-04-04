@@ -50,6 +50,8 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Menu.this, UserProfile.class);
+                intent.putExtra(UserProfile.NEW_USER, false);
+                intent.putExtra(UserProfile.EDIT_MODE, false);
                 startActivity(intent);
             }
         });

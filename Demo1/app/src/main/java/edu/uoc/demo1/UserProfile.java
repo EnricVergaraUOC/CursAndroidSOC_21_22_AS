@@ -18,6 +18,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,15 +28,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
+    public static final String EDIT_MODE = "USER_PROFILE_EDIT_MODE";
+    public static final String NEW_USER = "USER_PROFILE_NEW_USER";
+
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     private ImageView userImage;
+    private ImageButton btn_changeAvatar;
+    private Button btn_save;
+    private EditText editText_userName;
+    private EditText editText_email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        Intent intent = getIntent();
+        Boolean editMode = intent.getBooleanExtra(EDIT_MODE, false);
+        Boolean newUser = intent.getBooleanExtra(NEW_USER, false);
+        btn_changeAvatar = findViewById(R.id.changeUsePhoto);
+        btn_save = findViewById(R.id.btn_save);
+        editText_userName = findViewById(R.id.edit_user_name);
+        editText_email = findViewById(R.id.edit_user_email);
+        setEditMode(editMode || newUser);
+
+
         userImage = findViewById(R.id.userImage);
-        ImageButton photo = findViewById(R.id.changeUsePhoto);
-        photo.setOnClickListener(new View.OnClickListener() {
+
+        btn_changeAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(checkAndRequestPermissions(UserProfile.this)){
@@ -42,6 +62,20 @@ public class UserProfile extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setEditMode(boolean editMode){
+        if (!editMode){
+            btn_changeAvatar.setVisibility(View.INVISIBLE);
+            btn_save.setVisibility(View.INVISIBLE);
+            editText_userName.setEnabled(false);
+            editText_email.setEnabled(false);
+        }else{
+            btn_changeAvatar.setVisibility(View.VISIBLE);
+            btn_save.setVisibility(View.VISIBLE);
+            editText_userName.setEnabled(true);
+            editText_email.setEnabled(true);
+        }
     }
 
     private void chooseImage(Context context){
