@@ -55,7 +55,7 @@
         android:id="@+id/photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select photo"
+        android:text="User Profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
