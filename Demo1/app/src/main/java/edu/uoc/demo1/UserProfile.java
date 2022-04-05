@@ -51,6 +51,15 @@ public class UserProfile extends AppCompatActivity {
         editText_email = findViewById(R.id.edit_user_email);
         setEditMode(editMode || newUser);
 
+        if (!newUser){
+            //get data from info provider (webservice, from disk)...
+            String s_userName = "";
+            String s_email = "";
+            String s_imageB64 = "";
+            getUserInfo(s_userName, s_email, s_imageB64);
+            setInfoOnWidgets(s_userName, s_email, s_imageB64);
+        }
+
 
         userImage = findViewById(R.id.userImage);
 
@@ -62,6 +71,15 @@ public class UserProfile extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void getUserInfo(String name, String email, String picture){
+        name = "pepito";
+        email = "pepito@uoc.edu";
+        picture = null;
+    }
+    private void setInfoOnWidgets(String name, String email, String picture) {
+
     }
 
     private void setEditMode(boolean editMode){
