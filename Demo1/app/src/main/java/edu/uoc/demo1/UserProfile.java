@@ -34,6 +34,7 @@ import java.util.List;
 public class UserProfile extends AppCompatActivity {
     public static final String EDIT_MODE = "USER_PROFILE_EDIT_MODE";
     public static final String NEW_USER = "USER_PROFILE_NEW_USER";
+    public static final String USER_ID = "USER_PROFILE_ID";
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
 
@@ -50,7 +51,7 @@ public class UserProfile extends AppCompatActivity {
     private Button btn_save;
     private EditText editText_userName;
     private EditText editText_email;
-
+    private Integer id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class UserProfile extends AppCompatActivity {
         Intent intent = getIntent();
         Boolean editMode = intent.getBooleanExtra(EDIT_MODE, false);
         Boolean newUser = intent.getBooleanExtra(NEW_USER, false);
+        id = intent.getIntExtra(USER_ID,0);
         btn_changeAvatar = findViewById(R.id.changeUsePhoto);
         btn_save = findViewById(R.id.btn_save);
         editText_userName = findViewById(R.id.edit_user_name);
@@ -87,7 +89,8 @@ public class UserProfile extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getSharedPreferences(ID_USER_PROFILE,Context.MODE_PRIVATE);
+                String finalFile = ID_USER_PROFILE+"_"+id;
+                SharedPreferences pref = getSharedPreferences(finalFile,Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=pref.edit();
                 editor.putString(KEY_INFO_USER_NAME, editText_userName.getText().toString());
                 editor.putString(KEY_INFO_EMAIL, editText_email.getText().toString());
@@ -111,7 +114,8 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void getUserInfo(String[] userInfo){
-        SharedPreferences pref = getSharedPreferences(ID_USER_PROFILE, Context.MODE_PRIVATE);
+        String finalFile = ID_USER_PROFILE+"_"+id;
+        SharedPreferences pref = getSharedPreferences(finalFile, Context.MODE_PRIVATE);
 
         userInfo[INFO_USER_NAME] = pref.getString(KEY_INFO_USER_NAME,"");;
         userInfo[INFO_USER_EMAIL] = pref.getString(KEY_INFO_EMAIL,"");;

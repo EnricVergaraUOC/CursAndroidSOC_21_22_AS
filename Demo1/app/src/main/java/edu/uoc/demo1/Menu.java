@@ -1,30 +1,15 @@
 package edu.uoc.demo1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Menu extends AppCompatActivity {
 
@@ -45,16 +30,71 @@ public class Menu extends AppCompatActivity {
         //imgTitle.setImageResource(R.drawable.tictactoe_title);
         switchIA.setChecked(false);
 
-        Button photo = findViewById(R.id.photo);
-        photo.setOnClickListener(new View.OnClickListener() {
+        EditText idUser = findViewById(R.id.edit_text_user_id);
+        Button create_user = findViewById(R.id.btn_create_user);
+        create_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int userID = 0;
+                try {
+                    userID = Integer.parseInt(idUser.getText().toString());
+                }
+                catch(NumberFormatException e){
+                    Toast.makeText(getApplicationContext(),
+                            "El user id debe ser numérico!", Toast.LENGTH_SHORT)
+                            .show();
+                }
                 Intent intent = new Intent(Menu.this, UserProfile.class);
-                intent.putExtra(UserProfile.NEW_USER, false);
+                intent.putExtra(UserProfile.NEW_USER, true);
                 intent.putExtra(UserProfile.EDIT_MODE, true);
+                intent.putExtra(UserProfile.USER_ID, userID);
                 startActivity(intent);
             }
         });
+
+        Button view_user = findViewById(R.id.btn_view_user);
+        view_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int userID = 0;
+                try {
+                    userID = Integer.parseInt(idUser.getText().toString());
+                }
+                catch(NumberFormatException e){
+                    Toast.makeText(getApplicationContext(),
+                            "El user id debe ser numérico!", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                Intent intent = new Intent(Menu.this, UserProfile.class);
+                intent.putExtra(UserProfile.NEW_USER, false);
+                intent.putExtra(UserProfile.EDIT_MODE, false);
+                intent.putExtra(UserProfile.USER_ID, userID);
+                startActivity(intent);
+            }
+        });
+
+        Button edit_user = findViewById(R.id.btn_edit_user);
+        edit_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int userID = 0;
+                try {
+                    userID = Integer.parseInt(idUser.getText().toString());
+                }
+                catch(NumberFormatException e){
+                    Toast.makeText(getApplicationContext(),
+                            "El user id debe ser numérico!", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                Intent intent = new Intent(Menu.this, UserProfile.class);
+                intent.putExtra(UserProfile.NEW_USER, false);
+                intent.putExtra(UserProfile.EDIT_MODE, true);
+                intent.putExtra(UserProfile.USER_ID, userID);
+                startActivity(intent);
+            }
+        });
+
+
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
