@@ -11,10 +11,20 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.*;
+
+import java.io.IOException;
+import java.util.Date;
 public class Menu extends AppCompatActivity {
 
 
     public final static String AI_ENABLED = "AI_ENABLED";
+
+
+
+
 
     private ImageView imgTitle;
     @Override
@@ -22,6 +32,34 @@ public class Menu extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Expense expense = new Expense("rest. ca la pagesa", 100, "2010/2/1");
+        expense.AddNewPayer("Enric", 50);
+        expense.AddNewPayer("Jose Miguel", 50);
+
+
+        User user1 = new User("Enric", "evergaraca@uoc.edu", null);
+        User user2 = new User("Jose Miguel", "jm@uoc.edu", null);
+        Trip newTrip = new Trip(null,"2010/1/1","la volta al món");
+        newTrip.AddNewUser(user1);
+        newTrip.AddNewUser(user2);
+        newTrip.AddNewExpense(expense);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = null;
+        try {
+            jsonStr = mapper.writeValueAsString(newTrip);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            Trip tripAux = mapper.readValue(jsonStr, Trip.class);
+            String kk = "";
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Button register = findViewById(R.id.goRgister);
         Button tresEnRaya = findViewById(R.id.go3EnRaya);

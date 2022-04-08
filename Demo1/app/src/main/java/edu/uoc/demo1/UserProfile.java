@@ -27,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedImageView;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +48,15 @@ public class UserProfile extends AppCompatActivity {
     private static final String KEY_INFO_PICTURE = "INFO_PICTURE ";
     private static final String ID_USER_PROFILE = "ID_USER_PROFILE";
 
-    private ImageView userImage;
+
+    private RoundedImageView userImage;
+    private ImageView userImage2;
     private ImageButton btn_changeAvatar;
     private Button btn_save;
     private EditText editText_userName;
     private EditText editText_email;
     private Integer id;
+    private String pictureAux = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,7 @@ public class UserProfile extends AppCompatActivity {
         editText_userName = findViewById(R.id.edit_user_name);
         editText_email = findViewById(R.id.edit_user_email);
         userImage = findViewById(R.id.userImage);
+        userImage2 = findViewById(R.id.userImage2);
 
         setEditMode(editMode || newUser);
 
@@ -96,14 +102,7 @@ public class UserProfile extends AppCompatActivity {
                 editor.putString(KEY_INFO_EMAIL, editText_email.getText().toString());
 
                 //Convert from bitmap to base64 string
-                BitmapDrawable drawable = (BitmapDrawable) userImage.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                editor.putString(KEY_INFO_PICTURE, encoded);
+                editor.putString(KEY_INFO_PICTURE, pictureAux);
 
                 editor.commit();
             }
@@ -128,6 +127,7 @@ public class UserProfile extends AppCompatActivity {
             byte[] decodedString = Base64.decode(userInfo[INFO_USER_PICTURE], Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0,decodedString.length);
             userImage.setImageBitmap(decodedByte);
+            userImage2.setImageBitmap(decodedByte);
         }
 
     }
@@ -225,6 +225,14 @@ public class UserProfile extends AppCompatActivity {
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         userImage.setImageBitmap(selectedImage);
+                        userImage2.setImageBitmap(selectedImage);
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        selectedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        pictureAux = encoded;
                     }
                     break;
                 case 1:
@@ -238,7 +246,15 @@ public class UserProfile extends AppCompatActivity {
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
                                 userImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                userImage2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
+
+                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                                BitmapFactory.decodeFile(picturePath).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+                                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                                pictureAux = encoded;
                             }
                         }
                     }
