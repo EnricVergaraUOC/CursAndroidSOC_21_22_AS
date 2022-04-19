@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Demo1</string>
+    <string name="btn_create" translatable="false">Create new User</string>
 </resources>
