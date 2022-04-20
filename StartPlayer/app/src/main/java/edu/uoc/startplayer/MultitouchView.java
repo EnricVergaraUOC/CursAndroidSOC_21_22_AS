@@ -10,13 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class MultitouchView extends View implements View.OnTouchListener {
 
     private Paint paint;
+    private Paint paintText;
     private static final int SIZE = 200;
     CountDownTimer cTimer = null;
     private int[] colors = { Color.BLUE, Color.GREEN, Color.MAGENTA,
@@ -32,6 +31,10 @@ public class MultitouchView extends View implements View.OnTouchListener {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setARGB(255,255,0,0);
+
+        paintText = new Paint();
+        paintText.setColor(Color.GRAY);
+        paintText.setTextSize(200);
 
         this.setOnTouchListener(this);
     }
@@ -50,7 +53,6 @@ public class MultitouchView extends View implements View.OnTouchListener {
                 canvas.drawCircle(x,y,SIZE, paint);
             }
         }else{
-
             for (int i = 0; i < map.size(); i++){
                 int x = map.get(i).posX;
                 int y = map.get(i).posY;
@@ -61,9 +63,9 @@ public class MultitouchView extends View implements View.OnTouchListener {
                 }
                 canvas.drawCircle(x,y,SIZE, paint);
             }
-
         }
 
+        canvas.drawText("1", 100,200, paintText);
 
 
 
@@ -87,25 +89,31 @@ public class MultitouchView extends View implements View.OnTouchListener {
                 colorIndex++;
                 map.add(newPoint);
 
-                if (cTimer != null){
-                    cTimer.cancel();
-                }
-                cTimer = new CountDownTimer(3000, 1000)
-                {
-                    public void onTick(long millisUntilFinished) { }
-                    public void onFinish() {
-
-                        int min = 0;
-                        int max = map.size();
-                        Random random = new Random();
-                        playerSelected = random.nextInt(max + min) + min;
-
-                        invalidate();
+                if (map.size()>1){
+                    if (cTimer != null){
                         cTimer.cancel();
-
                     }
-                };
-                cTimer.start();
+                    cTimer = new CountDownTimer(3000, 1000)
+                    {
+                        public void onTick(long millisUntilFinished) { }
+                        public void onFinish() {
+
+                            int min = 0;
+                            int max = map.size();
+                            Random random = new Random();
+                            playerSelected = random.nextInt(max + min) + min;
+
+                            invalidate();
+                            if (cTimer != null){
+                                cTimer.cancel();
+                            }
+
+                        }
+                    };
+                    cTimer.start();
+                }
+
+
             }
 
                 break;
@@ -131,6 +139,9 @@ public class MultitouchView extends View implements View.OnTouchListener {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
+                if (cTimer != null){
+                    cTimer.cancel();
+                }
                 boolean found = false;
                 int index = 0;
                 while(!found && index < map.size()){
