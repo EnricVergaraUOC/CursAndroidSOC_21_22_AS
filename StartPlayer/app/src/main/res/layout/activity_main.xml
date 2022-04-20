@@ -6,13 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <edu.uoc.startplayer.MultitouchView
+        android:id="@+id/multitouchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
+        android:id="@+id/lbl_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Bla bla bla lab la bla bla bla"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_restart"
+        app:layout_constraintVertical_bias="0.026" />
+
+    <Button
+        android:id="@+id/btn_restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Restart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/multitouchView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

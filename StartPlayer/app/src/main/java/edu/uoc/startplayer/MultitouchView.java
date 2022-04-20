@@ -5,9 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +19,8 @@ public class MultitouchView extends View implements View.OnTouchListener {
 
     private Paint paint;
     private Paint paintText;
-    private static final int SIZE = 200;
+    private static final int SIZE_CIRCLE = 200;
+    private static final int SIZE_TEXT = 190;
     CountDownTimer cTimer = null;
     private int[] colors = { Color.BLUE, Color.GREEN, Color.MAGENTA,
             Color.BLACK, Color.CYAN, Color.GRAY, Color.RED, Color.DKGRAY,
@@ -25,24 +29,43 @@ public class MultitouchView extends View implements View.OnTouchListener {
 
     ArrayList<Vector2D> map = new ArrayList<Vector2D>();
     private int playerSelected = -1;
+    TextView lbl_info = null;
+    Button btn_restart = null;
 
-    public MultitouchView(Context context) {
-        super(context);
+    public MultitouchView(Context context, AttributeSet attrs) {
+        super(context, attrs);
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setARGB(255,255,0,0);
 
+
         paintText = new Paint();
-        paintText.setColor(Color.GRAY);
-        paintText.setTextSize(200);
+        paintText.setColor(Color.WHITE);
+        paintText.setTextSize(SIZE_TEXT);
 
         this.setOnTouchListener(this);
+    }
+
+    public void initView(MainActivity activity){
+        btn_restart = activity.findViewById(R.id.btn_restart);
+        lbl_info = activity.findViewById(R.id.lbl_info);
+        lbl_info.setText("");
+        btn_restart.setVisibility(INVISIBLE);
+        btn_restart.setOnClickListener(new OnClickListener() {
+            public void onClick(View v)
+            {
+                map.clear();
+                playerSelected = -1;
+                invalidate();
+                btn_restart.setVisibility(INVISIBLE);
+                lbl_info.setText("");
+            }
+        });
     }
 
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
 
         if (playerSelected == -1){
             for (int i = 0; i < map.size(); i++){
@@ -50,22 +73,29 @@ public class MultitouchView extends View implements View.OnTouchListener {
                 int y = map.get(i).posY;
                 int c = map.get(i).color;
                 paint.setColor(c);
-                canvas.drawCircle(x,y,SIZE, paint);
+                canvas.drawCircle(x,y,SIZE_CIRCLE, paint);
+
             }
         }else{
+            int theOthers = 2;
+            String text = "";
             for (int i = 0; i < map.size(); i++){
                 int x = map.get(i).posX;
                 int y = map.get(i).posY;
                 if(i == playerSelected){
                     paint.setColor(Color.RED);
+                    text = "1";
                 }else{
                     paint.setColor(Color.BLACK);
+                    text = ""+theOthers;
+                    theOthers++;
                 }
-                canvas.drawCircle(x,y,SIZE, paint);
+                canvas.drawCircle(x,y,SIZE_CIRCLE, paint);
+                canvas.drawText(text, x - (int)(SIZE_TEXT*0.25),y+(int)(SIZE_TEXT*0.25), paintText);
             }
         }
 
-        canvas.drawText("1", 100,200, paintText);
+
 
 
 
@@ -93,10 +123,18 @@ public class MultitouchView extends View implements View.OnTouchListener {
                     if (cTimer != null){
                         cTimer.cancel();
                     }
+                    lbl_info.setText("Calculating player positions in...3");
                     cTimer = new CountDownTimer(3000, 1000)
                     {
-                        public void onTick(long millisUntilFinished) { }
+                        public void onTick(long millisUntilFinished) {
+                            int seconds = (int)(millisUntilFinished / 1000);
+                            lbl_info.setText("Calculating player positions in..."+seconds);
+
+                        }
                         public void onFinish() {
+
+                            btn_restart.setVisibility(VISIBLE);
+                            lbl_info.setText("");
 
                             int min = 0;
                             int max = map.size();
@@ -139,6 +177,7 @@ public class MultitouchView extends View implements View.OnTouchListener {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
+                lbl_info.setText("");
                 if (cTimer != null){
                     cTimer.cancel();
                 }

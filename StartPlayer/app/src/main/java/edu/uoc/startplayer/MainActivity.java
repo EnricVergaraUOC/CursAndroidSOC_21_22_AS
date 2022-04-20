@@ -10,8 +10,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myTouchView = new MultitouchView(this);
-        setContentView(myTouchView);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        MultitouchView touchView = findViewById(R.id.multitouchView);
+
+        touchView.initView(this);
     }
 }
