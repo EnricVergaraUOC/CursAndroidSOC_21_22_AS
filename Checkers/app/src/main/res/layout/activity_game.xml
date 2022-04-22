@@ -7,12 +7,13 @@
     tools:context=".GameActivity">
 
     <TableLayout
+        android:id="@+id/table1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton00"
@@ -86,9 +87,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton10"
@@ -162,9 +164,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton20"
@@ -238,9 +241,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton30"
@@ -314,9 +318,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton40"
@@ -390,9 +395,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton50"
@@ -466,9 +472,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton60"
@@ -542,9 +549,10 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/imageButton70"
@@ -619,6 +627,16 @@
                 app:srcCompat="@drawable/black_0001" />
         </TableRow>
 
-       
+
     </TableLayout>
+
+    <TextView
+        android:id="@+id/lbl_info"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
