@@ -12,12 +12,12 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton[][] renderBoard = new ImageButton[NUM_COLS_ROWS][NUM_COLS_ROWS];
     private TextView lblInfo;
     private ChessBoard logicBoard;
-
+    private String originalPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        originalPosition = "";
         logicBoard = new ChessBoard();
 
 
@@ -63,7 +63,22 @@ public class GameActivity extends AppCompatActivity {
         //Y va de 0-7 --> de 8-1
         //(7,7) --> "h1"
         String pos = convertCoordToString(x,y);
-
+        if (originalPosition.compareTo("") == 0){
+            originalPosition = pos;
+        }else{
+            try {
+                logicBoard.movePiece(originalPosition, pos, Piece.WHITE);
+                logicBoard.Render(renderBoard);
+                originalPosition = "";
+            } catch (CheckersException e) {
+                e.printStackTrace();
+                originalPosition = "";
+            }
+        }
+        //si posOrigen es vacio
+        //  rellenar posorigen
+        //caso contrario
+        //  llamar a move del boardLogic
     }
 
     public String convertCoordToString(int x, int y){

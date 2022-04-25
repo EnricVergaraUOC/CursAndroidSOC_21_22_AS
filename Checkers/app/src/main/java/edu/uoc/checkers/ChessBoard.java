@@ -301,7 +301,7 @@ public class ChessBoard {
 	void Render (ImageButton[][] btns){
 		for (int fila = 0; fila < GameActivity.NUM_COLS_ROWS; fila++){
 			for (int col = 0; col < GameActivity.NUM_COLS_ROWS; col++){
-				board[fila][col].Render(btns[fila][col]);
+				board[fila][col].Render(btns[GameActivity.NUM_COLS_ROWS -1 - fila][col]);
 			}
 		}
 	}
