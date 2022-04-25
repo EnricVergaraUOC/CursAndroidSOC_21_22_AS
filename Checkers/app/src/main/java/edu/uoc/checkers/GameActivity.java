@@ -68,7 +68,10 @@ public class GameActivity extends AppCompatActivity {
 
     public String convertCoordToString(int x, int y){
         String aux = "";
-
+        char coord1 = (char)('a' + x);
+        aux += coord1;
+        char coord2 = (char)('8' - y);
+        aux += coord2;
         return aux;
     }
 }
