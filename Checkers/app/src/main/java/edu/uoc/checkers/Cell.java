@@ -52,7 +52,7 @@ public class Cell {
 		if (piece != Piece.EMPTY) {
 			piece.Render(btn);
 		}else {
-			btn.setImageResource(0);
+			btn.setImageResource(R.drawable.empty);
 		}
 	}
 

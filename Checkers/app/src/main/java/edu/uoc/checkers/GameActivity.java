@@ -35,6 +35,7 @@ public class GameActivity extends AppCompatActivity {
                         int id = (int) v.getTag();
                         int y = (int)id/10;
                         int x = id % 10;
+
                         DoCellAction(x, y);
                     }
                 });
@@ -58,5 +59,15 @@ public class GameActivity extends AppCompatActivity {
     }
     public void DoCellAction(int x, int y){
         lblInfo.setText("X: " + x + ", Y: " + y);
+        //X va de 0-7 --> de "a"-"h"
+        //Y va de 0-7 --> de 8-1
+
+
+    }
+
+    public String convertCoordToString(int x, int y){
+        String aux = "";
+        
+        return aux;
     }
 }
