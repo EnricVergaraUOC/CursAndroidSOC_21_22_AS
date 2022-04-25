@@ -15,9 +15,9 @@ public class Queen extends Piece {
 
 	public void Render(ImageButton btn){
 		if (colour == WHITE){
-			btn.setImageResource(R.drawable.white_0012);
+			btn.setImageResource(R.drawable.white_queen);
 		}else{
-			btn.setImageResource(R.drawable.black_0012);
+			btn.setImageResource(R.drawable.black_queen);
 		}
 	}
 	public String toString() {

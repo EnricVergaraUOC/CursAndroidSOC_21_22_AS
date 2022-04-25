@@ -20,9 +20,9 @@ public class Pawn extends Piece {
 
 	public void Render(ImageButton btn){
 		if (colour == WHITE){
-			btn.setImageResource(R.drawable.white_0001);
+			btn.setImageResource(R.drawable.white_piece);
 		}else{
-			btn.setImageResource(R.drawable.black_0001);
+			btn.setImageResource(R.drawable.black_piece);
 		}
 	}
 	

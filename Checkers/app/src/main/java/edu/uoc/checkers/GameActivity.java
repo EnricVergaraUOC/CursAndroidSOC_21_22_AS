@@ -51,17 +51,19 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+        InitBoard();
+
         logicBoard.Render(renderBoard);
     }
 
 
 
 
-    private void ResetBoard()
+    private void InitBoard()
     {
         for (int i = 0; i < NUM_COLS_ROWS; i++){
             for (int j = 0; j < NUM_COLS_ROWS; j++){
-                renderBoard[i][j].setImageResource(R.drawable.black_0001);
+                renderBoard[i][j].setBackgroundColor(R.drawable.black_0001);
                 renderBoard[i][j].setTag(0);
             }
         }
