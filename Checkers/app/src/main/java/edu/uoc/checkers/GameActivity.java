@@ -11,17 +11,26 @@ public class GameActivity extends AppCompatActivity {
     public static final int NUM_COLS_ROWS = 8;
     private ImageButton[][] renderBoard = new ImageButton[NUM_COLS_ROWS][NUM_COLS_ROWS];
     private TextView lblInfo;
+    private TextView lblError;
     private ChessBoard logicBoard;
     private String originalPosition;
+    private boolean currentTurn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         originalPosition = "";
+        currentTurn = Piece.WHITE;
+
         logicBoard = new ChessBoard();
 
 
         lblInfo = findViewById(R.id.lbl_info);
+        lblError = findViewById(R.id.lbl_error);
+        lblError.setText("");
+
+        UpdatePlayerTurn();
+
         for (int i = 0; i < NUM_COLS_ROWS; i++){
             for (int j = 0; j < NUM_COLS_ROWS; j++){
                 String buttonID = "imageButton"+i+j;
@@ -57,8 +66,17 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void UpdatePlayerTurn(){
+        if (currentTurn == Piece.WHITE){
+            lblInfo.setText("Es el turno de las BLANCAS");
+        }else{
+            lblInfo.setText("Es el turno de las NEGRAS");
+        }
+
+    }
     public void DoCellAction(int x, int y){
-        lblInfo.setText("X: " + x + ", Y: " + y);
+
         //X va de 0-7 --> de "a"-"h"
         //Y va de 0-7 --> de 8-1
         //(7,7) --> "h1"
@@ -67,12 +85,16 @@ public class GameActivity extends AppCompatActivity {
             originalPosition = pos;
         }else{
             try {
-                logicBoard.movePiece(originalPosition, pos, Piece.WHITE);
+                if(logicBoard.movePiece(originalPosition, pos, currentTurn)){
+                    currentTurn = !currentTurn;
+                    UpdatePlayerTurn();
+                }
                 logicBoard.Render(renderBoard);
                 originalPosition = "";
             } catch (CheckersException e) {
                 e.printStackTrace();
                 originalPosition = "";
+
             }
         }
         //si posOrigen es vacio
