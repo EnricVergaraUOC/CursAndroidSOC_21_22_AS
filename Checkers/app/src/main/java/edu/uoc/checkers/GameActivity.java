@@ -61,13 +61,14 @@ public class GameActivity extends AppCompatActivity {
         lblInfo.setText("X: " + x + ", Y: " + y);
         //X va de 0-7 --> de "a"-"h"
         //Y va de 0-7 --> de 8-1
-
+        //(7,7) --> "h1"
+        String pos = convertCoordToString(x,y);
 
     }
 
     public String convertCoordToString(int x, int y){
         String aux = "";
-        
+
         return aux;
     }
 }
