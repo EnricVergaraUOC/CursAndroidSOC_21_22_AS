@@ -88,13 +88,14 @@ public class GameActivity extends AppCompatActivity {
                 if(logicBoard.movePiece(originalPosition, pos, currentTurn)){
                     currentTurn = !currentTurn;
                     UpdatePlayerTurn();
+                    lblError.setText("");
                 }
                 logicBoard.Render(renderBoard);
                 originalPosition = "";
             } catch (CheckersException e) {
                 e.printStackTrace();
                 originalPosition = "";
-
+                lblError.setText(e.getMessage());
             }
         }
         //si posOrigen es vacio
