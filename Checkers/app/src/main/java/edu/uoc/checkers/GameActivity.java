@@ -2,6 +2,7 @@ package edu.uoc.checkers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -36,7 +37,8 @@ public class GameActivity extends AppCompatActivity {
                 String buttonID = "imageButton"+i+j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 renderBoard[i][j] = findViewById(resID);
-                //renderBoard[i][j].setBackgroundResource(0);
+                //renderBoard[i][j].setBackgroundResource(R.drawable.cell_black);
+                //renderBoard[i][j].setBackgroundColor(Color.BLACK);
                 renderBoard[i][j].setTag(i*10+j);
                 renderBoard[i][j].setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -61,10 +63,15 @@ public class GameActivity extends AppCompatActivity {
 
     private void InitBoard()
     {
+        boolean white = true;
         for (int i = 0; i < NUM_COLS_ROWS; i++){
             for (int j = 0; j < NUM_COLS_ROWS; j++){
-                renderBoard[i][j].setBackgroundColor(R.drawable.black_0001);
-                renderBoard[i][j].setTag(0);
+                if (white){
+                    //renderBoard[i][j].setBackgroundColor(Color.WHITE);
+                }else{
+                    //renderBoard[i][j].setBackgroundColor(Color.BLACK);
+                }
+                white = !white;
             }
         }
     }
