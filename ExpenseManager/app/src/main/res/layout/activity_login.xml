@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
-
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -24,14 +23,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
-
     <Button
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_login"
         android:layout_width="171dp"
         android:layout_height="73dp"
-        android:layout_marginBottom="32dp"
-        android:text="Register"
+        android:layout_marginBottom="20dp"
+        android:text="Login"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goto_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_goto_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -79,7 +87,7 @@
         android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/btn_register"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/input_username"
         app:layout_constraintVertical_bias="0.0" />
