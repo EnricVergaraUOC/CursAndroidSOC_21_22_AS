@@ -36,8 +36,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             public void onClick(View view) {
                 Toast.makeText(view.getContext(),"click on item: "+myListData.getDescription(),Toast.LENGTH_LONG).show();
                 listdata[holder.getAdapterPosition()].setDescription("KAKAK");
-                //notifyItemChanged(holder.getAdapterPosition());
-
+                notifyItemChanged(holder.getAdapterPosition());
             }
         });
     }
