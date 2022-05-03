@@ -22,15 +22,7 @@ public class TripListActivity extends AppCompatActivity {
         btnAddNewTrip = findViewById(R.id.btn_add_new_trip);
         btnViewProfile = findViewById(R.id.btn_vew_profile);
 
-        //------Temporal code for debugging purposes:
-        Button btnAuxViewTrip = findViewById(R.id.btn_aux_view_trip);
-        btnAuxViewTrip.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent k = new Intent(TripListActivity.this, TripViewActivity.class);
-                startActivity(k);
-            }
-        });
-
+        
         //Add actions to the buttons:
         btnAddNewTrip.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

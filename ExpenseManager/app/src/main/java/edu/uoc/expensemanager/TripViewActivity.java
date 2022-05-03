@@ -1,6 +1,8 @@
 package edu.uoc.expensemanager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,14 +55,26 @@ public class TripViewActivity extends AppCompatActivity {
         }
 
 
-        //------Temporal code for debugging purposes:
-        Button btnAuxViewExpense = findViewById(R.id.btn_aux_view_expense);
-        btnAuxViewExpense.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent k = new Intent(TripViewActivity.this, ExpenseActivity.class);
-                startActivity(k);
-            }
-        });
+        ExpenseInfo[] myListData = new ExpenseInfo[] {
+                new ExpenseInfo("Expense1", "(10/17/2021)",  101),
+                new ExpenseInfo("Expense2", "(10/17/2021)",  102),
+                new ExpenseInfo("Expense3", "(10/17/2021)",  103),
+                new ExpenseInfo("Expense4", "(10/17/2021)",  104),
+                new ExpenseInfo("Expense5", "(10/17/2021)",  105),
+                new ExpenseInfo("Expense6", "(10/17/2021)",  106),
+                new ExpenseInfo("Expense7", "(10/17/2021)",  107),
+                new ExpenseInfo("Expense8", "(10/17/2021)",  108),
+                new ExpenseInfo("Expense9", "(10/17/2021)",  109),
+                new ExpenseInfo("Expense10", "(10/17/2021)", 110),
+                new ExpenseInfo("Expense11", "(10/17/2021)", 111),
+                new ExpenseInfo("Expense12", "(10/17/2021)", 112)
+        };
+
+        RecyclerView recyclerView = findViewById(R.id.expense_list);
+        ExpenseListAdapter adapter = new ExpenseListAdapter(myListData, this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
 
     }

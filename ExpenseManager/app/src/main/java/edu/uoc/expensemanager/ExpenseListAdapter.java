@@ -23,12 +23,12 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHolder>{
-    private TripInfo[] listdata;
+public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>{
+    private ExpenseInfo[] listdata;
     private Context activityContext;
     // RecyclerView recyclerView;
-    public TripListAdapter(TripInfo[] listdata, Context context) {
-        this.listdata = listdata;
+    public ExpenseListAdapter(ExpenseInfo[] listData, Context context) {
+        this.listdata = listData;
         this.activityContext = context;
     }
     @Override
@@ -41,19 +41,19 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final TripInfo myListData = listdata[position];
-        holder.textView_Desc.setText(listdata[position].decription);
+        final ExpenseInfo myListData = listdata[position];
+        holder.textView_Desc.setText(listdata[position].description);
         holder.textView_Date.setText(listdata[position].date);
         //holder.imageView.setImageResource(listdata[position].());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent k = new Intent(activityContext, TripViewActivity.class);
-                k.putExtra("Description",myListData.decription);
+                Intent k = new Intent(activityContext, ExpenseActivity.class);
+                k.putExtra("Description",myListData.description);
                 k.putExtra("Date",myListData.date);
                 activityContext.startActivity(k);
 
-                //Toast.makeText(view.getContext(),"click on item: "+myListData.decription,Toast.LENGTH_LONG).show();
+                //Toast.makeText(view.getContext(),"click on item: "+myListData.description,Toast.LENGTH_LONG).show();
                 //listdata[holder.getAdapterPosition()].setDescription("KAKAK");
                 //notifyItemChanged(holder.getAdapterPosition());
             }
