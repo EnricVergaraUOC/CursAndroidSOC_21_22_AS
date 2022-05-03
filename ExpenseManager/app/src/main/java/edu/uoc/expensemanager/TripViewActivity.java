@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -14,7 +15,8 @@ public class TripViewActivity extends AppCompatActivity {
 
     ImageButton btnEditTrip;
     FloatingActionButton btnAddNewExpense;
-
+    TextView txt_Description;
+    TextView txt_Date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,18 @@ public class TripViewActivity extends AppCompatActivity {
                 startActivity(k);
             }
         });
+
+        txt_Description = findViewById(R.id.txt_description);
+        txt_Date = findViewById(R.id.txt_date);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String description = extras.getString("Description");
+            String date = extras.getString("Date");
+            txt_Description.setText(description);
+            txt_Date.setText(date);
+
+            //The key argument here must match that used in the other activity
+        }
 
 
         //------Temporal code for debugging purposes:

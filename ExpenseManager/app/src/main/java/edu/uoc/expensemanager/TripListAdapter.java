@@ -1,5 +1,7 @@
 package edu.uoc.expensemanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHolder>{
     private TripInfo[] listdata;
-
+    private Context activityContext;
     // RecyclerView recyclerView;
-    public TripListAdapter(TripInfo[] listdata) {
+    public TripListAdapter(TripInfo[] listdata, Context context) {
         this.listdata = listdata;
+        this.activityContext = context;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,6 +48,11 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent k = new Intent(activityContext, TripViewActivity.class);
+                k.putExtra("Description",myListData.decription);
+                k.putExtra("Date",myListData.date);
+                activityContext.startActivity(k);
+
                 Toast.makeText(view.getContext(),"click on item: "+myListData.decription,Toast.LENGTH_LONG).show();
                 //listdata[holder.getAdapterPosition()].setDescription("KAKAK");
                 //notifyItemChanged(holder.getAdapterPosition());

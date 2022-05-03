@@ -48,22 +48,22 @@ public class TripListActivity extends AppCompatActivity {
 
 
         TripInfo[] myListData = new TripInfo[] {
-                new TripInfo("", "10/17/2021", "Trip 1", 1),
-                new TripInfo("", "10/17/2021", "Trip 2",2),
-                new TripInfo("", "10/17/2021", "Trip 3",3),
-                new TripInfo("", "10/17/2021", "Trip 4",4),
-                new TripInfo("", "10/17/2021", "Trip 5",5),
-                new TripInfo("", "10/17/2021", "Trip 6",6),
-                new TripInfo("", "10/17/2021", "Trip 7",7),
-                new TripInfo("", "10/17/2021", "Trip 8",8),
-                new TripInfo("", "10/17/2021", "Trip 9",9),
-                new TripInfo("", "10/17/2021", "Trip 10",10),
-                new TripInfo("", "10/17/2021", "Trip 11",11),
-                new TripInfo("", "10/17/2021", "Trip 12",12)
+                new TripInfo("", "(10/17/2021)", "Trip 1", 1),
+                new TripInfo("", "(10/17/2021)", "Trip 2",2),
+                new TripInfo("", "(10/17/2021)", "Trip 3",3),
+                new TripInfo("", "(10/17/2021)", "Trip 4",4),
+                new TripInfo("", "(10/17/2021)", "Trip 5",5),
+                new TripInfo("", "(10/17/2021)", "Trip 6",6),
+                new TripInfo("", "(10/17/2021)", "Trip 7",7),
+                new TripInfo("", "(10/17/2021)", "Trip 8",8),
+                new TripInfo("", "(10/17/2021)", "Trip 9",9),
+                new TripInfo("", "(10/17/2021)", "Trip 10",10),
+                new TripInfo("", "(10/17/2021)", "Trip 11",11),
+                new TripInfo("", "(10/17/2021)", "Trip 12",12)
         };
 
         RecyclerView recyclerView = findViewById(R.id.trip_list);
-        TripListAdapter adapter = new TripListAdapter(myListData);
+        TripListAdapter adapter = new TripListAdapter(myListData, this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

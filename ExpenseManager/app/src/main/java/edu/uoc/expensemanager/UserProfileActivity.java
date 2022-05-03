@@ -21,11 +21,14 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
         btnLogout = findViewById(R.id.btn_logout);
         btnSave = findViewById(R.id.btn_save);
         txtUserName = findViewById(R.id.txt_username);
         imgAvatar = findViewById(R.id.img_avatar);
         inputName  = findViewById(R.id.input_name);
+
+
 
         //Add actions to the buttons:
         btnSave.setOnClickListener(new View.OnClickListener() {

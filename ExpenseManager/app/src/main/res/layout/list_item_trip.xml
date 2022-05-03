@@ -23,7 +23,8 @@
         android:layout_toEndOf="@id/imageView"
         android:layout_toRightOf="@id/imageView"
         android:gravity="center_vertical"
-        android:textSize="16sp"/>
+        android:text="Descripció bla bla bla"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView_date"
@@ -32,6 +33,7 @@
         android:layout_toEndOf="@id/textView_description"
         android:layout_toRightOf="@id/textView_description"
         android:gravity="center_vertical"
-        android:textSize="16sp"/>
+        android:text="(10/12/2010)"
+        android:textSize="16sp" />
 
 </RelativeLayout>
