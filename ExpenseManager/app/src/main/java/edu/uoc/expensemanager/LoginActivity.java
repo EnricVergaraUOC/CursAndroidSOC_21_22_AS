@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         inputPwd = findViewById(R.id.input_pwd);
         inputUserName = findViewById(R.id.input_username);
 
+        
         //Add actions to the buttons:
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

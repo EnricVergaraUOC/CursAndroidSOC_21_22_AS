@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"
         android:text="Pagador:"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/payer_list"
         app:layout_constraintEnd_toStartOf="@+id/textView14"
         app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent" />
@@ -67,19 +67,18 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="52dp"
         android:text="(...)"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/payer_list"
         app:layout_constraintEnd_toStartOf="@+id/button3" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
         android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.706"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="317dp" />
 
     <Button
         android:id="@+id/button4"
@@ -92,14 +91,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="375dp"
-        android:layout_height="229dp"
+        android:id="@+id/payer_list"
+        android:layout_width="381dp"
+        android:layout_height="262dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/editTextNumber"

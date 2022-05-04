@@ -29,11 +29,11 @@ import java.io.InputStream;
 import java.net.URL;
 
 
-public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHolder>{
-    private TripInfo[] listdata;
+public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.ViewHolder>{
+    private PayerInfo[] listdata;
     private Context activityContext;
     // RecyclerView recyclerView;
-    public TripListAdapter(TripInfo[] listdata, Context context) {
+    public PayerListAdapter(PayerInfo[] listdata, Context context) {
         this.listdata = listdata;
         this.activityContext = context;
     }
@@ -47,24 +47,19 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final TripInfo myListData = listdata[position];
-        holder.textView_Desc.setText(listdata[position].decription);
-        holder.textView_Date.setText(listdata[position].date);
+        final PayerInfo myListData = listdata[position];
+        holder.textView_Desc.setText(listdata[position].name);
+        holder.textView_Date.setText(listdata[position].email + " " + listdata[position].amount);
         if (listdata[position].image_url.compareTo("") == 0){
             holder.imageView.setImageResource(R.drawable.trip);
         }else{
             new DownLoadImageTask(holder.imageView).execute(listdata[position].image_url);
         }
-        //holder.imageView.setImageResource(listdata[position].());
+
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent k = new Intent(activityContext, TripViewActivity.class);
-                k.putExtra("Description",myListData.decription);
-                k.putExtra("Date",myListData.date);
-                activityContext.startActivity(k);
-
-                //Toast.makeText(view.getContext(),"click on item: "+myListData.decription,Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(),"click on item: "+myListData.name,Toast.LENGTH_LONG).show();
                 //listdata[holder.getAdapterPosition()].setDescription("KAKAK");
                 //notifyItemChanged(holder.getAdapterPosition());
             }
