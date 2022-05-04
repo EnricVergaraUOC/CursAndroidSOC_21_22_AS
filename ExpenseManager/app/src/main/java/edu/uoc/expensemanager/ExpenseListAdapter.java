@@ -34,7 +34,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.list_item_trip, parent, false);
+        View listItem= layoutInflater.inflate(R.layout.list_item_expense, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
         return viewHolder;
     }
@@ -44,6 +44,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         final ExpenseInfo myListData = listdata[position];
         holder.textView_Desc.setText(listdata[position].description);
         holder.textView_Date.setText(listdata[position].date);
+        holder.textView_Amount.setText(""+listdata[position].totalAmount + " €");
         //holder.imageView.setImageResource(listdata[position].());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,12 +71,15 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         public ImageView imageView;
         public TextView textView_Desc;
         public TextView textView_Date;
+        public TextView textView_Amount;
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
+            this.textView_Amount = (TextView) itemView.findViewById(R.id.textView_amount);
+
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }

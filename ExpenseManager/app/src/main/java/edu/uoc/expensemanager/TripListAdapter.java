@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,12 +82,15 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         public ImageView imageView;
         public TextView textView_Desc;
         public TextView textView_Date;
+        public Button btn_Amount;
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
+            this.btn_Amount = (Button) itemView.findViewById(R.id.btn_amount);
+
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }

@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.list_item_trip, parent, false);
+        View listItem= layoutInflater.inflate(R.layout.list_item_payer, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
         return viewHolder;
     }
@@ -55,6 +56,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         }else{
             new DownLoadImageTask(holder.imageView).execute(listdata[position].image_url);
         }
+        holder.btn_amount.setText(""+listdata[position].amount + " €");
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,12 +78,14 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         public ImageView imageView;
         public TextView textView_Desc;
         public TextView textView_Date;
+        public Button btn_amount;
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
+            this.btn_amount = (Button) itemView.findViewById(R.id.btn_amount);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }
