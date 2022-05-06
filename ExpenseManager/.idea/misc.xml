@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/layout/list_item_expense.xml" value="0.33" />
         <entry key="app/src/main/res/layout/list_item_payer.xml" value="0.33" />
         <entry key="app/src/main/res/layout/list_item_trip.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/list_item_user.xml" value="0.21927083333333333" />
       </map>
     </option>
   </component>
