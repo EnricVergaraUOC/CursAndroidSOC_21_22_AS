@@ -26,7 +26,7 @@ public class TripViewActivity extends AppCompatActivity {
     FloatingActionButton btnAddNewExpense;
     TextView txt_Description;
     TextView txt_Date;
-    ArrayList<UserInfo> users = new ArrayList<UserInfo>();
+    public ArrayList<UserInfo> users = new ArrayList<UserInfo>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +79,7 @@ public class TripViewActivity extends AppCompatActivity {
         };
 
         RecyclerView recyclerView_expense = findViewById(R.id.expense_list);
-        ExpenseListAdapter expense_adapter = new ExpenseListAdapter(myListData, this);
+        ExpenseListAdapter expense_adapter = new ExpenseListAdapter(myListData, this, users);
         recyclerView_expense.setHasFixedSize(true);
         recyclerView_expense.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_expense.setAdapter(expense_adapter);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,8 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
         if (listdata[position].image_url.compareTo("") == 0){
             holder.imageView.setImageResource(R.drawable.trip);
         }else{
+            //Uri uri = Uri.parse(listdata[position].image_url);
+            //holder.imageView.setImageURI(uri);
             new DownLoadImageTask(holder.imageView).execute(listdata[position].image_url);
         }
         //holder.imageView.setImageResource(listdata[position].());
@@ -56,6 +59,8 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
                 Intent k = new Intent(activityContext, TripViewActivity.class);
                 k.putExtra("Description",myListData.decription);
                 k.putExtra("Date",myListData.date);
+
+
                 activityContext.startActivity(k);
 
                 //Toast.makeText(view.getContext(),"click on item: "+myListData.decription,Toast.LENGTH_LONG).show();
@@ -116,6 +121,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
                 Runs on the UI thread after doInBackground(Params...).
          */
         protected void onPostExecute(Bitmap result){
+
             imageView.setImageBitmap(result);
         }
     }

@@ -11,17 +11,22 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.ExpenseInfo;
+import edu.uoc.expensemanager.model.UserInfo;
 import edu.uoc.expensemanager.ui.ExpenseActivity;
 
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>{
     private ExpenseInfo[] listdata;
     private Context activityContext;
+    ArrayList<UserInfo> users;
     // RecyclerView recyclerView;
-    public ExpenseListAdapter(ExpenseInfo[] listData, Context context) {
+    public ExpenseListAdapter(ExpenseInfo[] listData, Context context, ArrayList<UserInfo> users) {
         this.listdata = listData;
+        this.users = users;
         this.activityContext = context;
     }
     @Override
@@ -45,6 +50,8 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                 Intent k = new Intent(activityContext, ExpenseActivity.class);
                 k.putExtra("Description",myListData.description);
                 k.putExtra("Date",myListData.date);
+                k.putExtra("Amount",myListData.totalAmount);
+                k.putExtra("Users", users);
                 activityContext.startActivity(k);
 
                 //Toast.makeText(view.getContext(),"click on item: "+myListData.description,Toast.LENGTH_LONG).show();

@@ -16,18 +16,20 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.PayerInfo;
 
 
 public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.ViewHolder>{
-    private PayerInfo[] listdata;
+    private ArrayList<PayerInfo> listdata;
     private Context activityContext;
-    // RecyclerView recyclerView;
-    public PayerListAdapter(PayerInfo[] listdata, Context context) {
-        this.listdata = listdata;
+
+    public PayerListAdapter(ArrayList<PayerInfo> payers, Context context) {
+        this.listdata = payers;
         this.activityContext = context;
     }
     @Override
@@ -40,15 +42,15 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final PayerInfo myListData = listdata[position];
-        holder.textView_Desc.setText(listdata[position].name);
-        holder.textView_Date.setText(listdata[position].email + " " + listdata[position].amount);
-        if (listdata[position].image_url.compareTo("") == 0){
+        final PayerInfo myListData = listdata.get(position);
+        holder.textView_Desc.setText(listdata.get(position).name);
+        holder.textView_Date.setText(listdata.get(position).email + " " + listdata.get(position).amount);
+        if (listdata.get(position).image_url.compareTo("") == 0){
             holder.imageView.setImageResource(R.drawable.trip);
         }else{
-            new DownLoadImageTask(holder.imageView).execute(listdata[position].image_url);
+            new DownLoadImageTask(holder.imageView).execute(listdata.get(position).image_url);
         }
-        holder.btn_amount.setText(""+listdata[position].amount + " €");
+        holder.btn_amount.setText(""+listdata.get(position).amount + " €");
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +65,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
 
     @Override
     public int getItemCount() {
-        return listdata.length;
+        return listdata.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

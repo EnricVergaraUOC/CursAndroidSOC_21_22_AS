@@ -45,9 +45,10 @@ public class TripListActivity extends AppCompatActivity {
         String path2 = "https://m.media-amazon.com/images/M/MV5BMTUyMDU1MTU2N15BMl5BanBnXkFtZTgwODkyNzQ3MDE@._V1_SX150_CR0,0,150,150_.jpg";
         String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
         String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
+        String path5 = "https://imagenes.elpais.com/resizer/ignf5hRqPoNrcNeilF3aB9CKy-M=/1960x0/cloudfront-eu-central-1.images.arcpublishing.com/prisa/HE3SMC3L7Z7XENXLHLLKE3CDEA.jpg";
 
         TripInfo[] myListData = new TripInfo[] {
-            new TripInfo(path1, "(10/17/2021)", "Trip 1", 1),
+            new TripInfo(path5, "(10/17/2021)", "Trip 1", 1),
             new TripInfo("", "(10/17/2021)", "Trip 2",2),
             new TripInfo(path2, "(10/17/2021)", "Trip 3",3),
             new TripInfo("", "(10/17/2021)", "Trip 4",4),
