@@ -1,4 +1,4 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.model.TripInfo;
+import edu.uoc.expensemanager.ui.adapter.TripListAdapter;
 
 public class TripListActivity extends AppCompatActivity {
     FloatingActionButton btnAddNewTrip;

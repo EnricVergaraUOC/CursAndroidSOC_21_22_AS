@@ -1,10 +1,14 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+
+import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.model.PayerInfo;
+import edu.uoc.expensemanager.ui.adapter.PayerListAdapter;
 
 public class ExpenseActivity extends AppCompatActivity {
 

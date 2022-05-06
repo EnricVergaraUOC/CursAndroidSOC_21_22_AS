@@ -1,4 +1,4 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import edu.uoc.expensemanager.R;
 
 public class LoginActivity extends AppCompatActivity {
 

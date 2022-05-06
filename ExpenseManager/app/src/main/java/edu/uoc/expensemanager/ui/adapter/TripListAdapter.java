@@ -1,4 +1,4 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,22 +12,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
 import java.net.URL;
+
+import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.model.TripInfo;
+import edu.uoc.expensemanager.ui.TripViewActivity;
 
 
 public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHolder>{

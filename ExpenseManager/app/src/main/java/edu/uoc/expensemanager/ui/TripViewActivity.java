@@ -1,4 +1,4 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,13 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.model.ExpenseInfo;
+import edu.uoc.expensemanager.model.UserInfo;
+import edu.uoc.expensemanager.ui.adapter.ExpenseListAdapter;
+import edu.uoc.expensemanager.ui.adapter.UserListAdapter;
 
 public class TripViewActivity extends AppCompatActivity {
 
@@ -84,13 +89,17 @@ public class TripViewActivity extends AppCompatActivity {
         String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
         String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
 
-        users.add(new UserInfo("Enric", path1));
-        users.add(new UserInfo("Joan", path2));
+        users.add(new UserInfo("Enric", ""));
+        users.add(new UserInfo("Joan", ""));
+        users.add(new UserInfo("Pepito", ""));
+
 
         RecyclerView recyclerView_user = findViewById(R.id.user_list);
         UserListAdapter user_adapter = new UserListAdapter(users, this);
         recyclerView_user.setHasFixedSize(true);
-        recyclerView_user.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_user.setLayoutManager(layoutManager);
         recyclerView_user.setAdapter(user_adapter);
 
 

@@ -10,28 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManager">
         <activity
-            android:name=".ExpenseActivity"
+            android:name=".ui.ExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".ui.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".TripUsersActivity"
+            android:name=".ui.TripUsersActivity"
             android:exported="false" />
         <activity
-            android:name=".TripEditActivity"
+            android:name=".ui.TripEditActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".TripViewActivity"
+            android:name=".ui.TripViewActivity"
             android:exported="false" />
         <activity
-            android:name=".TripListActivity"
+            android:name=".ui.TripListActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

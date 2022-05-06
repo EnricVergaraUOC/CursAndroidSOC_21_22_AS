@@ -1,4 +1,4 @@
-package edu.uoc.expensemanager;
+package edu.uoc.expensemanager.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import edu.uoc.expensemanager.R;
 
 public class UserProfileActivity extends AppCompatActivity {
 
