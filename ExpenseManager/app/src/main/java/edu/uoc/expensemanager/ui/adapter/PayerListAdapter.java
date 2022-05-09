@@ -1,6 +1,9 @@
 package edu.uoc.expensemanager.ui.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +26,8 @@ import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.PayerInfo;
+import edu.uoc.expensemanager.ui.LoginActivity;
+import edu.uoc.expensemanager.ui.TripListActivity;
 
 
 public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.ViewHolder>{
@@ -51,6 +57,32 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
             new DownLoadImageTask(holder.imageView).execute(listdata.get(position).image_url);
         }
         holder.btn_amount.setText(""+listdata.get(position).amount + " €");
+        holder.btn_amount.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
+                builder.setTitle("Title");
+                View viewInflated = LayoutInflater.from(activityContext).inflate(R.layout.amount_input, (ViewGroup) null, false);
+                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                builder.setView(viewInflated);
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        //TODO...input.getText().toString();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

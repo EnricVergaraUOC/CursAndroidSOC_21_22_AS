@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,8 +31,9 @@ public class ExpenseActivity extends AppCompatActivity  {
     ArrayList<UserInfo> users;
     ArrayList<PayerInfo> payers = new ArrayList<PayerInfo>();
     PayerListAdapter adapter;
-    int index = 0;
+    Spinner payer_spinner;
     Integer totalAmount;
+    int spinnerCurrentIndexSelected = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +59,13 @@ public class ExpenseActivity extends AppCompatActivity  {
         }
 
         ArrayAdapter<UserInfo> adapter_spinner = new ArrayAdapter<UserInfo>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, users);
-        Spinner payer_spinner = findViewById(R.id.payer_spinner);
+        payer_spinner = findViewById(R.id.payer_spinner);
         payer_spinner.setAdapter(adapter_spinner);
         payer_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(view.getContext(),"click on item: "+ users.get(i).name,Toast.LENGTH_LONG).show();
+                spinnerCurrentIndexSelected = i;
             }
 
             @Override
@@ -68,10 +73,13 @@ public class ExpenseActivity extends AppCompatActivity  {
 
             }
         });
+
+
+
         btnAddPayer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UserInfo user = users.get(index);
-                index = (index +1) % users.size();
+                UserInfo user = users.get(spinnerCurrentIndexSelected);
+
                 int amount = 0;
                 if (payers.size() == 0){
                     amount = totalAmount;
