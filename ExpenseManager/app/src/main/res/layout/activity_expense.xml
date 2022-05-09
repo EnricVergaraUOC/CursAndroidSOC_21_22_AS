@@ -51,31 +51,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="48dp"
-        android:text="Pagador:"
-        app:layout_constraintBottom_toTopOf="@+id/payer_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtf_date"
-        app:layout_constraintVertical_bias="0.8" />
-
-    <Button
-        android:id="@+id/btn_add_payer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="Add Payer"
-        app:layout_constraintBottom_toTopOf="@+id/payer_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.751"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtf_date"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/button4"
         android:layout_width="130dp"
@@ -116,4 +91,34 @@
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtf_amount" />
+
+    <LinearLayout
+        android:layout_width="408dp"
+        android:layout_height="46dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/payer_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtf_date">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Pagador:"
+            android:textAlignment="center" />
+
+        <Spinner
+            android:id="@+id/payer_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_add_payer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Payer" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
