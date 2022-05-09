@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,12 @@ public class ExpenseActivity extends AppCompatActivity  {
         txt_date = findViewById(R.id.txtf_date);;
         txt_description = findViewById(R.id.txtf_description);
         btnAddPayer = findViewById(R.id.btn_add_payer);
-
+        Button btn_save = findViewById(R.id.btn_expense_save);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int kaka = 0;
+            }
+        });
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String description = extras.getString("Description");

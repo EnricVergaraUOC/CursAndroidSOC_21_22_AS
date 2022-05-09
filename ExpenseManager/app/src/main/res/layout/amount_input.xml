@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:hint=""
             android:imeOptions="actionDone"
-            android:inputType="textPassword" />
+            android:inputType="numberDecimal"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

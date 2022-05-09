@@ -60,16 +60,27 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         holder.btn_amount.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
-                builder.setTitle("Title");
+                builder.setTitle("Amount for " +  myListData.name + ":");
                 View viewInflated = LayoutInflater.from(activityContext).inflate(R.layout.amount_input, (ViewGroup) null, false);
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                input.setText(""+myListData.amount);
                 builder.setView(viewInflated);
 
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        //TODO...input.getText().toString();
+                        String str = input.getText().toString();
+                        try{
+                            int number = Integer.parseInt(str);
+                            System.out.println(number);
+                            myListData.amount = number;
+                            PayerListAdapter.this.notifyItemChanged(position);
+                        }
+                        catch (NumberFormatException ex){
+                            ex.printStackTrace();
+                        }
+
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

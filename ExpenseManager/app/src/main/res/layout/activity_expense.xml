@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_expense_save"
         android:layout_width="130dp"
         android:layout_height="69dp"
         android:layout_marginBottom="16dp"
@@ -66,7 +66,7 @@
         android:layout_width="381dp"
         android:layout_height="262dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintBottom_toTopOf="@+id/btn_expense_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -95,9 +95,10 @@
     <LinearLayout
         android:layout_width="408dp"
         android:layout_height="46dp"
+        android:layout_marginTop="48dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/payer_list"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtf_date">
 
@@ -105,9 +106,9 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Pagador:"
             android:layout_marginLeft="50dp"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:text="Pagador:" />
 
         <Spinner
             android:id="@+id/payer_spinner"
@@ -119,10 +120,10 @@
             android:id="@+id/btn_add_payer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Payer"
             android:layout_marginRight="50dp"
+            android:gravity="center_vertical"
 
-            android:gravity="center_vertical"/>
+            android:text="Add Payer" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
