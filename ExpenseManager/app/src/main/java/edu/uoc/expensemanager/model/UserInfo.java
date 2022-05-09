@@ -7,6 +7,12 @@ public class UserInfo implements Parcelable {
     public String name;
     public String url_avatar;
 
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public UserInfo(String name, String url_avatar){
         this.name = name;
         this.url_avatar = url_avatar;
