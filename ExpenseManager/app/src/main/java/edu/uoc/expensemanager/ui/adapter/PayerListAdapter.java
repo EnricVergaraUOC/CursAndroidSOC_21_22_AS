@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.PayerInfo;
+import edu.uoc.expensemanager.ui.ExpenseActivity;
 import edu.uoc.expensemanager.ui.LoginActivity;
 import edu.uoc.expensemanager.ui.TripListActivity;
 
@@ -59,6 +60,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         holder.btn_amount.setText(""+listdata.get(position).amount + " €");
         holder.btn_amount.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
                 builder.setTitle("Amount for " +  myListData.name + ":");
                 View viewInflated = LayoutInflater.from(activityContext).inflate(R.layout.amount_input, (ViewGroup) null, false);
@@ -75,7 +77,8 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
                             int number = Integer.parseInt(str);
                             System.out.println(number);
                             myListData.amount = number;
-                            PayerListAdapter.this.notifyItemChanged(position);
+                            int pos = holder.getAdapterPosition();
+                            PayerListAdapter.this.notifyItemChanged(pos);
                         }
                         catch (NumberFormatException ex){
                             ex.printStackTrace();
@@ -95,10 +98,35 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         });
 
 
+        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                new AlertDialog.Builder(activityContext)
+                        .setTitle("Do you really want to delete the payer " +  myListData.name + "?")
+                        .setMessage("")
+
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Continue with delete operation
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                             }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                }
+        });
+
+
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),"click on item: "+myListData.name,Toast.LENGTH_LONG).show();
+                //Toast.makeText(view.getContext(),"click on item: "+myListData.name,Toast.LENGTH_LONG).show();
                 //listdata[holder.getAdapterPosition()].setDescription("KAKAK");
                 //notifyItemChanged(holder.getAdapterPosition());
             }
@@ -116,6 +144,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         public TextView textView_Desc;
         public TextView textView_Date;
         public Button btn_amount;
+        public Button btn_delete;
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +152,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
             this.btn_amount = (Button) itemView.findViewById(R.id.btn_amount);
+            this.btn_delete = (Button) itemView.findViewById(R.id.btn_delete);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }

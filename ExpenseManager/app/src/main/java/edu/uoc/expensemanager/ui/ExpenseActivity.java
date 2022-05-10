@@ -71,7 +71,7 @@ public class ExpenseActivity extends AppCompatActivity  {
         payer_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(view.getContext(),"click on item: "+ users.get(i).name,Toast.LENGTH_LONG).show();
+                //Toast.makeText(view.getContext(),"click on item: "+ users.get(i).name,Toast.LENGTH_LONG).show();
                 spinnerCurrentIndexSelected = i;
             }
 
@@ -86,14 +86,38 @@ public class ExpenseActivity extends AppCompatActivity  {
         btnAddPayer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UserInfo user = users.get(spinnerCurrentIndexSelected);
-
-                int amount = 0;
-                if (payers.size() == 0){
-                    amount = totalAmount;
+                boolean userAdded = false;
+                for (PayerInfo payer:payers)
+                {
+                    if (payer.name.compareTo(user.name) == 0 ){
+                        userAdded = true;
+                        break;
+                    }
                 }
-                PayerInfo newPayer = new PayerInfo("",user.name,"",amount);
-                payers.add(newPayer);
-                adapter.notifyItemInserted(payers.size()-1);
+
+                if (!userAdded){
+                    int amount = 0;
+                    if (payers.size() == 0){
+                        amount = totalAmount;
+                    }
+                    PayerInfo newPayer = new PayerInfo("",user.name,"",amount);
+                    payers.add(newPayer);
+                    adapter.notifyItemInserted(payers.size()-1);
+                }else{
+                    new AlertDialog.Builder(ExpenseActivity.this)
+                            .setTitle("User " + user.name + " is already added")
+                            .setMessage("")
+
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Continue with delete operation
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+
             }
         });
 
