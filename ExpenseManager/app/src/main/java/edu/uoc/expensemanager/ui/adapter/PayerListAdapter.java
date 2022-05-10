@@ -33,11 +33,11 @@ import edu.uoc.expensemanager.ui.TripListActivity;
 
 public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.ViewHolder>{
     private ArrayList<PayerInfo> listdata;
-    private Context activityContext;
+    private ExpenseActivity activity;
 
-    public PayerListAdapter(ArrayList<PayerInfo> payers, Context context) {
+    public PayerListAdapter(ArrayList<PayerInfo> payers, ExpenseActivity activity) {
         this.listdata = payers;
-        this.activityContext = context;
+        this.activity = activity;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,9 +61,9 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         holder.btn_amount.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle("Amount for " +  myListData.name + ":");
-                View viewInflated = LayoutInflater.from(activityContext).inflate(R.layout.amount_input, (ViewGroup) null, false);
+                View viewInflated = LayoutInflater.from(activity).inflate(R.layout.amount_input, (ViewGroup) null, false);
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                 input.setText(""+myListData.amount);
                 builder.setView(viewInflated);
@@ -101,13 +101,17 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
         holder.btn_delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                new AlertDialog.Builder(activityContext)
+                new AlertDialog.Builder(activity)
                         .setTitle("Do you really want to delete the payer " +  myListData.name + "?")
                         .setMessage("")
 
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Continue with delete operation
+                                int pos = holder.getAdapterPosition();
+                                listdata.remove(pos);
+                                notifyItemRemoved(pos);
+                                activity.updateLabelWarning();
                             }
                         })
 

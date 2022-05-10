@@ -16,7 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,13 +32,16 @@ public class ExpenseActivity extends AppCompatActivity  {
     EditText txt_amount;
     EditText txt_date;
     EditText txt_description;
+    TextView lbl_warning;
     Button btnAddPayer;
     ArrayList<UserInfo> users;
     ArrayList<PayerInfo> payers = new ArrayList<PayerInfo>();
     PayerListAdapter adapter;
     Spinner payer_spinner;
     Integer totalAmount;
+
     int spinnerCurrentIndexSelected = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,8 @@ public class ExpenseActivity extends AppCompatActivity  {
         txt_amount = findViewById(R.id.txtf_amount);
         txt_date = findViewById(R.id.txtf_date);;
         txt_description = findViewById(R.id.txtf_description);
+        lbl_warning = findViewById(R.id.lbl_warning);
+        lbl_warning.setVisibility(View.INVISIBLE);
         btnAddPayer = findViewById(R.id.btn_add_payer);
         Button btn_save = findViewById(R.id.btn_expense_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +111,7 @@ public class ExpenseActivity extends AppCompatActivity  {
                     PayerInfo newPayer = new PayerInfo("",user.name,"",amount);
                     payers.add(newPayer);
                     adapter.notifyItemInserted(payers.size()-1);
+                    updateLabelWarning();
                 }else{
                     new AlertDialog.Builder(ExpenseActivity.this)
                             .setTitle("User " + user.name + " is already added")
@@ -136,5 +145,10 @@ public class ExpenseActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+    }
+
+    public void updateLabelWarning(){
+        lbl_warning.setVisibility(View.VISIBLE);
+        lbl_warning.setText("Be careful, the sum of all the payers (200 €) have to be the total amount (100€)");
     }
 }

@@ -95,7 +95,7 @@
     <LinearLayout
         android:layout_width="408dp"
         android:layout_height="46dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="36dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
@@ -126,4 +126,17 @@
             android:text="Add Payer" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/lbl_warning"
+        android:layout_width="352dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:textColor="#C10D0D"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/payer_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
