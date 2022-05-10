@@ -79,6 +79,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<PayerListAdapter.View
                             myListData.amount = number;
                             int pos = holder.getAdapterPosition();
                             PayerListAdapter.this.notifyItemChanged(pos);
+                            activity.updateLabelWarning();
                         }
                         catch (NumberFormatException ex){
                             ex.printStackTrace();

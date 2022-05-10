@@ -34,6 +34,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     EditText txt_description;
     TextView lbl_warning;
     Button btnAddPayer;
+    Button btnSave;
     ArrayList<UserInfo> users;
     ArrayList<PayerInfo> payers = new ArrayList<PayerInfo>();
     PayerListAdapter adapter;
@@ -53,10 +54,55 @@ public class ExpenseActivity extends AppCompatActivity  {
         lbl_warning = findViewById(R.id.lbl_warning);
         lbl_warning.setVisibility(View.INVISIBLE);
         btnAddPayer = findViewById(R.id.btn_add_payer);
-        Button btn_save = findViewById(R.id.btn_expense_save);
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        btnSave = findViewById(R.id.btn_expense_save);
+        btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int kaka = 0;
+                boolean showWarning = false;
+                String infoWarning = "";
+                if (payers.size() == 0){
+                    showWarning = true;
+                    infoWarning = "Before saving you need to add at least one payer";
+                }else{
+                    int totalAmount = 0;
+                    for (PayerInfo payer :payers)
+                    {
+                        totalAmount += payer.amount;
+                    }
+                    String s_totalAmount = txt_amount.getText().toString();
+
+                    try{
+                        int number = Integer.parseInt(s_totalAmount);
+                        if (totalAmount != number){
+                            lbl_warning.setVisibility(View.VISIBLE);
+                            infoWarning = "Be careful, the sum of all the payers ("+totalAmount +"€)";
+                            infoWarning += "have to be ("+ number +"€)";
+                            showWarning = true;
+                        }else{
+                            showWarning = false;
+                        }
+                    }
+                    catch (NumberFormatException ex){
+                        ex.printStackTrace();
+                    }
+                }
+
+                if (showWarning){
+                    new AlertDialog.Builder(ExpenseActivity.this)
+                            .setTitle("Error saving the expanse")
+                            .setMessage(infoWarning)
+
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Continue with delete operation
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }else{
+                    //TODO.. send data to firebase and activate activity indicator while
+                    // waiting server response
+                }
             }
         });
         Bundle extras = getIntent().getExtras();
@@ -67,7 +113,7 @@ public class ExpenseActivity extends AppCompatActivity  {
 
             txt_description.setText(description);
             txt_date.setText(date);
-            txt_amount.setText("" + totalAmount + " €");
+            txt_amount.setText("" + totalAmount);
 
             users = extras.getParcelableArrayList("Users");
 
@@ -148,7 +194,34 @@ public class ExpenseActivity extends AppCompatActivity  {
     }
 
     public void updateLabelWarning(){
-        lbl_warning.setVisibility(View.VISIBLE);
-        lbl_warning.setText("Be careful, the sum of all the payers (200 €) have to be the total amount (100€)");
+        if (payers.size() == 0){
+            lbl_warning.setVisibility(View.INVISIBLE);
+        }else{
+            int totalAmount = 0;
+            for (PayerInfo payer :payers)
+            {
+                totalAmount += payer.amount;
+            }
+            String s_totalAmount = txt_amount.getText().toString();
+
+            try{
+                int number = Integer.parseInt(s_totalAmount);
+                if (totalAmount != number){
+                    lbl_warning.setVisibility(View.VISIBLE);
+                    String info = "Be careful, the sum of all the payers ("+totalAmount +"€)";
+                    info += "\nhave to be ("+ number +"€)";
+                    lbl_warning.setText(info);
+                }else{
+                    lbl_warning.setVisibility(View.INVISIBLE);
+                }
+            }
+            catch (NumberFormatException ex){
+                ex.printStackTrace();
+            }
+
+        }
+
+
+
     }
 }
