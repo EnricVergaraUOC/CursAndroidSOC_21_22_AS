@@ -6,6 +6,8 @@ import android.os.Parcelable;
 public class UserInfo implements Parcelable {
     public String name;
     public String url_avatar;
+    public String amountPayed;
+    public String toPayOrToReceive;
 
 
     @Override
