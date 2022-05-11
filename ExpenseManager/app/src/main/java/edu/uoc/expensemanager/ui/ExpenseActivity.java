@@ -8,6 +8,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +43,13 @@ public class ExpenseActivity extends AppCompatActivity  {
     PayerListAdapter adapter;
     Spinner payer_spinner;
     Integer totalAmount;
+    ProgressBar progressBar;
 
     int spinnerCurrentIndexSelected = 0;
+
+
+    //To debug
+    boolean savedCorrectly = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,8 @@ public class ExpenseActivity extends AppCompatActivity  {
         lbl_warning = findViewById(R.id.lbl_warning);
         lbl_warning.setVisibility(View.INVISIBLE);
         btnAddPayer = findViewById(R.id.btn_add_payer);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         btnSave = findViewById(R.id.btn_expense_save);
         btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -100,8 +110,9 @@ public class ExpenseActivity extends AppCompatActivity  {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                 }else{
-                    //TODO.. send data to firebase and activate activity indicator while
-                    // waiting server response
+                    progressBar.setVisibility(View.VISIBLE);
+                    btnSave.setEnabled(false);
+                    DoConnection();
                 }
             }
         });
@@ -135,8 +146,6 @@ public class ExpenseActivity extends AppCompatActivity  {
             }
         });
 
-
-
         btnAddPayer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 UserInfo user = users.get(spinnerCurrentIndexSelected);
@@ -156,7 +165,13 @@ public class ExpenseActivity extends AppCompatActivity  {
                     }
                     PayerInfo newPayer = new PayerInfo("",user.name,"",amount);
                     payers.add(newPayer);
-                    adapter.notifyItemInserted(payers.size()-1);
+                    if (payers.size() == 1) {
+                        adapter.notifyItemChanged(payers.size()-1);
+                    }else{
+                        adapter.notifyItemInserted(payers.size()-1);
+                    }
+
+
                     updateLabelWarning();
                 }else{
                     new AlertDialog.Builder(ExpenseActivity.this)
@@ -220,8 +235,25 @@ public class ExpenseActivity extends AppCompatActivity  {
             }
 
         }
+    }
 
-
+    public void DoConnection(){
+        //TODO.. send data to firebase and activate activity indicator while
+        // waiting server response
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.INVISIBLE);
+                btnSave.setEnabled(true);
+                if (savedCorrectly){
+                    Toast.makeText(ExpenseActivity.this,"Expense saved successfully",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(ExpenseActivity.this,"Error trying to save the Expense",Toast.LENGTH_LONG).show();
+                    savedCorrectly = true;
+                }
+            }
+        }, 1500); //1'5 seconds
 
     }
 }
