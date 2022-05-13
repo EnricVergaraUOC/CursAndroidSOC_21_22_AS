@@ -43,8 +43,8 @@ public class UserAsPayerListAdapter extends RecyclerView.Adapter<UserAsPayerList
     public void onBindViewHolder(ViewHolder holder, int position) {
         final UserInfo myListData = listdata.get(position);
         holder.txt_user.setText(myListData.name);
-        holder.txt_amount.setText(myListData.amountPayed);
-        holder.txt_toPayOrToReceive.setText(myListData.toPayOrToReceive);
+        holder.txt_amount.setText(myListData.amountPayed + " €");
+        holder.txt_toPayOrToReceive.setText(myListData.toPayOrToReceive + " €");
 
         if (listdata.get(position).url_avatar.compareTo("") == 0){
             holder.imageView.setImageResource(R.drawable.user_avatar);

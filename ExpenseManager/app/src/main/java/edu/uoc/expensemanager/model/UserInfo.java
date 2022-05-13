@@ -7,8 +7,8 @@ public class UserInfo implements Parcelable {
     public String name;
     public String email;
     public String url_avatar;
-    public String amountPayed;
-    public String toPayOrToReceive;
+    public int amountPayed;
+    public int toPayOrToReceive;
 
 
     @Override
@@ -20,8 +20,8 @@ public class UserInfo implements Parcelable {
         this.name = name;
         this.url_avatar = url_avatar;
         this.email = email;
-        this.amountPayed = "0 €";
-        this.toPayOrToReceive = "0 €";
+        this.amountPayed = 0;
+        this.toPayOrToReceive = 0;
     }
 
     protected UserInfo(Parcel in) {

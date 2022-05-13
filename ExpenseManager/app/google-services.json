@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "10470514700",
+    "project_id": "expensemanager-5f400",
+    "storage_bucket": "expensemanager-5f400.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10470514700:android:be8dfa123374a13b124e29",
+        "android_client_info": {
+          "package_name": "edu.uoc.expensemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10470514700-vves65muoc7silqga2pnplap20pgh5qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJdrym1WSCxWbWQ9eHTbLkOXr5UMevpc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10470514700-vves65muoc7silqga2pnplap20pgh5qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
