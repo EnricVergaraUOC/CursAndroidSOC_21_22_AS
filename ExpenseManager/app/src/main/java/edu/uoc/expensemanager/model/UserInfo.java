@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class UserInfo implements Parcelable {
     public String name;
+    public String email;
     public String url_avatar;
     public String amountPayed;
     public String toPayOrToReceive;
@@ -15,9 +16,12 @@ public class UserInfo implements Parcelable {
         return name;
     }
 
-    public UserInfo(String name, String url_avatar){
+    public UserInfo(String name, String url_avatar, String email){
         this.name = name;
         this.url_avatar = url_avatar;
+        this.email = email;
+        this.amountPayed = "0 €";
+        this.toPayOrToReceive = "0 €";
     }
 
     protected UserInfo(Parcel in) {

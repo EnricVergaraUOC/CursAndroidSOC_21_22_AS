@@ -99,9 +99,9 @@ public class TripViewActivity extends AppCompatActivity {
         String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
         String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
 
-        users.add(new UserInfo("Enric", path1));
-        users.add(new UserInfo("Joan", ""));
-        users.add(new UserInfo("Pepito", ""));
+        users.add(new UserInfo("Enric", path1, "enric@uoc.edu"));
+        users.add(new UserInfo("Joan", "","joan@uoc.edu"));
+        users.add(new UserInfo("Pepito", "", "pepito@uoc.edu"));
 
 
         RecyclerView recyclerView_user = findViewById(R.id.user_list);
