@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,8 +20,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -34,22 +39,44 @@ public class TripEditActivity extends AppCompatActivity {
     ImageView tripImage;
     ImageButton btn_changeImage;
     String pictureAux;
-
+    EditText tripName;
+    Button btn_selectDate;
+    TextView txt_tripDate;
+    String selectedDate;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_edit);
-
+        tripName = findViewById(R.id.input_tripName);
         tripImage = findViewById(R.id.img_trip);
         btn_changeImage = findViewById(R.id.btn_changeImage);
+        btn_selectDate = findViewById(R.id.btn_selectDate);
+        txt_tripDate = findViewById(R.id.txt_tripDate);
+        txt_tripDate.setText("Fecha:  ----");
 
         btn_changeImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(checkAndRequestPermissions(TripEditActivity.this)){
                     chooseImage(TripEditActivity.this);
                 }
+            }
+        });
+
+        btn_selectDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DatePickerDialog mDlgDatePicker = new DatePickerDialog(TripEditActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String date = year + "-" + (monthOfYear + 1 < 10 ? "0" : "") + (monthOfYear + 1) + "-"
+                                + (dayOfMonth < 10 ? "0" : "") + dayOfMonth;
+                        //Toast.makeText(view.getContext(),"Date selected: "+date,Toast.LENGTH_LONG).show();
+                        selectedDate = date;
+                        txt_tripDate.setText("Fecha:  "+date);
+                    }
+                }, 2014, 1, 1);
+                mDlgDatePicker.show();
             }
         });
     }

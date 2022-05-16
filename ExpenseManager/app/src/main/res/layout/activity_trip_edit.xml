@@ -8,9 +8,9 @@
 
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="124dp"
-        android:layout_height="32dp"
+        android:id="@+id/txt_tripDate"
+        android:layout_width="157dp"
+        android:layout_height="75dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:text="Fecha:"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/input_name2"
+        android:id="@+id/input_tripName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="308dp"
@@ -64,14 +64,14 @@
         app:srcCompat="@drawable/trip" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_selectDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:text="Seleccionar data"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/input_name2" />
+        app:layout_constraintStart_toEndOf="@+id/txt_tripDate"
+        app:layout_constraintTop_toBottomOf="@+id/input_tripName" />
 
     <ImageButton
         android:id="@+id/btn_changeImage"
