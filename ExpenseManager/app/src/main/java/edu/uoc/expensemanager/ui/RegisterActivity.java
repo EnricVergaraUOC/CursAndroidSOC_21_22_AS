@@ -19,12 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.Utils;
 
 public class RegisterActivity extends AppCompatActivity {
 
     Button btnRegister;
     TextView inputUserName;
     TextView inputPwd;
+    TextView txt_error;
     private FirebaseAuth mAuth;
 
     public void kk (){
@@ -38,32 +40,34 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btn_register);
         inputPwd = findViewById(R.id.input_pwd);
         inputUserName = findViewById(R.id.input_username);
-
+        txt_error = findViewById(R.id.txt_error);
+        txt_error.setVisibility(View.INVISIBLE);
         //Add actions to the buttons:
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mAuth = FirebaseAuth.getInstance();
 
+                txt_error.setVisibility(View.INVISIBLE);
+                if (Utils.isEmpty(inputUserName) || Utils.isEmpty(inputPwd)){
+                    txt_error.setVisibility(View.VISIBLE);
+                    txt_error.setText("Email and pwd can not be empty");
 
-                mAuth.createUserWithEmailAndPassword(inputUserName.getText().toString(), inputPwd.getText().toString())
-                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    FirebaseUser user = mAuth.getCurrentUser();
-
-                                    Toast.makeText(RegisterActivity.this,"Successful Registration", Toast.LENGTH_LONG).show();
-                                    finish();
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    //Log.w("Register", "createUserWithEmail:failure", task.getException());
-                                    String errorMessage = task.getException().toString();
-                                    Toast.makeText(RegisterActivity.this,"Error with Register: "+ errorMessage, Toast.LENGTH_LONG).show();
+                }else {
+                    mAuth.createUserWithEmailAndPassword(inputUserName.getText().toString(), inputPwd.getText().toString())
+                            .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        finish();
+                                    } else {
+                                        String errorMessage = task.getException().toString();
+                                        txt_error.setVisibility(View.VISIBLE);
+                                        txt_error.setText(errorMessage);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }
