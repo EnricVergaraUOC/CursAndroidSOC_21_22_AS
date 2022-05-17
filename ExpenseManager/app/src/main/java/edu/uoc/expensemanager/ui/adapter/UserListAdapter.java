@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
 import edu.uoc.expensemanager.model.UserInfo;
 
 
@@ -68,38 +69,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             super(itemView);
             this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
-        }
-    }
-
-    private class DownLoadImageTask extends AsyncTask<String,Void,Bitmap> {
-        ImageView imageView;
-
-        public DownLoadImageTask(ImageView imageView){
-            this.imageView = imageView;
-        }
-
-        /*
-            doInBackground(Params... params)
-                Override this method to perform a computation on a background thread.
-         */
-        protected Bitmap doInBackground(String...urls){
-            String urlOfImage = urls[0];
-            Bitmap logo = null;
-            try{
-                InputStream is = new URL(urlOfImage).openStream();
-                logo = BitmapFactory.decodeStream(is);
-            }catch(Exception e){ // Catch the download exception
-                e.printStackTrace();
-            }
-            return logo;
-        }
-
-        /*
-            onPostExecute(Result result)
-                Runs on the UI thread after doInBackground(Params...).
-         */
-        protected void onPostExecute(Bitmap result){
-            imageView.setImageBitmap(result);
         }
     }
 }
