@@ -1,5 +1,6 @@
 package edu.uoc.expensemanager.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -15,10 +16,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,9 +31,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 
@@ -39,20 +49,27 @@ public class TripEditActivity extends AppCompatActivity {
     ImageView tripImage;
     ImageButton btn_changeImage;
     String pictureAux;
-    EditText tripName;
+    EditText tripDesc;
     Button btn_selectDate;
     TextView txt_tripDate;
     String selectedDate;
+    Button btn_save_trip;
+    TextView txt_info_connection;
+
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_edit);
-        tripName = findViewById(R.id.input_tripName);
+        selectedDate = "none";
+        btn_save_trip = findViewById(R.id.btn_save_trip);
         tripImage = findViewById(R.id.img_trip);
+        tripDesc = findViewById(R.id.input_tripDesc);
         btn_changeImage = findViewById(R.id.btn_changeImage);
         btn_selectDate = findViewById(R.id.btn_selectDate);
+        txt_info_connection = findViewById(R.id.txt_info_connection);
+        txt_info_connection.setVisibility(View.INVISIBLE);
         txt_tripDate = findViewById(R.id.txt_tripDate);
         txt_tripDate.setText("Fecha:  ----");
 
@@ -64,6 +81,13 @@ public class TripEditActivity extends AppCompatActivity {
             }
         });
 
+        btn_save_trip.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                txt_info_connection.setVisibility(View.INVISIBLE);
+                //TODO check if fields are empty...
+                DoConnection();
+            }
+        });
         btn_selectDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DatePickerDialog mDlgDatePicker = new DatePickerDialog(TripEditActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -198,5 +222,38 @@ public class TripEditActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+
+    public void DoConnection(){
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("description",tripDesc.getText().toString() );
+        user.put("date", selectedDate);
+        user.put("img_url", "");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Add a new document with a generated ID
+        db.collection("trips")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String doc_id = documentReference.getId();
+                        Log.d("TripEditActivity", "DocumentSnapshot added with ID: " + doc_id);
+                        txt_info_connection.setVisibility(View.VISIBLE);
+                        txt_info_connection.setTextColor(Color.GREEN);
+                        txt_info_connection.setText("Trip saved successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String error = e.toString();
+                        txt_info_connection.setVisibility(View.VISIBLE);
+                        txt_info_connection.setTextColor(Color.RED);
+                        txt_info_connection.setText(error);
+                        Log.w("TripEditActivity", "Error adding document", e);
+                    }
+                });
     }
 }
