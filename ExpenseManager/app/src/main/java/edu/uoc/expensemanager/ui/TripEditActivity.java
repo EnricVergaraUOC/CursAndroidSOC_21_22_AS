@@ -20,7 +20,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +31,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -45,13 +42,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.Utilities.Utils;
 
 public class TripEditActivity extends AppCompatActivity {
 
@@ -104,11 +101,17 @@ public class TripEditActivity extends AppCompatActivity {
 
         btn_save_trip.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                btn_save_trip.setEnabled(false);
-                loading_save.setVisibility(View.VISIBLE);
-                txt_info_connection.setVisibility(View.INVISIBLE);
-                //TODO check if fields are empty...
-                CreateNewTripOnFirebase();
+                //Check if there is information on description and date,
+                if (Utils.isEmptyTextView(tripDesc) || Utils.isEmptyString(selectedDate)){
+                    ShowErrorStatus("Description and date fields are required");
+                }else{
+                    btn_save_trip.setEnabled(false);
+                    loading_save.setVisibility(View.VISIBLE);
+                    txt_info_connection.setVisibility(View.INVISIBLE);
+
+                    CreateNewTripOnFirebase();
+                }
+
 
 
             }
@@ -207,9 +210,29 @@ public class TripEditActivity extends AppCompatActivity {
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
-                case 1:
                     if (resultCode == RESULT_OK && data != null) {
                         avatar = data.getData();
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        tripImage.setImageBitmap(selectedImage);
+                    }
+
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        if (resultCode == RESULT_OK && data != null) {
+                            avatar = data.getData();
+
+                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                            if (avatar != null) {
+                                Cursor cursor = getContentResolver().query(avatar, filePathColumn, null, null, null);
+                                if (cursor != null) {
+                                    cursor.moveToFirst();
+                                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                    String picturePath = cursor.getString(columnIndex);
+                                    tripImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                }
+                            }
+                        }
                     }
                     break;
             }

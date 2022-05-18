@@ -13,8 +13,11 @@ public final class Utils {
     private Utils(){
 
     }
-    public static boolean isEmpty (TextView txt){
+    public static boolean isEmptyTextView(TextView txt){
         return txt.getText().toString().compareTo("") == 0;
+    }
+    public static boolean isEmptyString(String txt){
+        return txt.compareTo("") == 0;
     }
 }
 

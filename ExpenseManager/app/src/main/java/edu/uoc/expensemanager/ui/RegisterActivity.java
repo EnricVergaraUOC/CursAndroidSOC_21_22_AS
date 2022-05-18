@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
                 mAuth = FirebaseAuth.getInstance();
 
                 txt_error.setVisibility(View.INVISIBLE);
-                if (Utils.isEmpty(inputUserName) || Utils.isEmpty(inputPwd)){
+                if (Utils.isEmptyTextView(inputUserName) || Utils.isEmptyTextView(inputPwd)){
                     txt_error.setVisibility(View.VISIBLE);
                     txt_error.setText("Email and pwd can not be empty");
 
