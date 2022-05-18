@@ -225,21 +225,33 @@ public class TripEditActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
+                        if (taskSnapshot.getMetadata() != null) {
+                            if (taskSnapshot.getMetadata().getReference() != null) {
+                                Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String imageUrl = uri.toString();
+                                        UpdateTrip(docID, imageUrl);
+                                    }
 
-                        if(downloadUri.isSuccessful()){
-                            String generatedFilePath = downloadUri.getResult().toString();
-                            System.out.println("## Stored path is "+generatedFilePath);
-                            UpdateTrip(docID, generatedFilePath);
+                                });
+                                result.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        ShowErrorStatus(e.toString());
+                                    }
+
+                                });
+                            }
                         }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        txt_info_connection.setVisibility(View.VISIBLE);
-                        txt_info_connection.setTextColor(Color.RED);
-                        txt_info_connection.setText(exception.toString());
+                        ShowErrorStatus(exception.toString());
                     }
                 });
     }
@@ -253,22 +265,13 @@ public class TripEditActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        btn_save_trip.setEnabled(true);
-                        loading_save.setVisibility(View.INVISIBLE);
-
-                        txt_info_connection.setVisibility(View.VISIBLE);
-                        txt_info_connection.setTextColor(Color.GREEN);
-                        txt_info_connection.setText("Trip saved successfully");
+                        TripSavedSuccessfully();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        txt_info_connection.setVisibility(View.VISIBLE);
-                        txt_info_connection.setTextColor(Color.RED);
-                        txt_info_connection.setText(e.toString());
-                        loading_save.setVisibility(View.INVISIBLE);
-                        btn_save_trip.setEnabled(true);
+                        ShowErrorStatus(e.toString());
                     }
                 });
     }
@@ -291,20 +294,37 @@ public class TripEditActivity extends AppCompatActivity {
                     public void onSuccess(DocumentReference documentReference) {
                         String doc_id = documentReference.getId();
                         Log.d("TripEditActivity", "DocumentSnapshot added with ID: " + doc_id);
-                        UploadImage(doc_id);
+                        if (avatar != null){
+                            UploadImage(doc_id);
+                        }else{
+                            TripSavedSuccessfully();
+                        }
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         String error = e.toString();
-                        txt_info_connection.setVisibility(View.VISIBLE);
-                        txt_info_connection.setTextColor(Color.RED);
-                        txt_info_connection.setText(error);
-                        Log.w("TripEditActivity", "Error adding document", e);
-                        loading_save.setVisibility(View.INVISIBLE);
-                        btn_save_trip.setEnabled(true);
+                        ShowErrorStatus(error);
                     }
                 });
+    }
+
+
+    public void ShowErrorStatus(String message){
+        txt_info_connection.setVisibility(View.VISIBLE);
+        txt_info_connection.setTextColor(Color.RED);
+        txt_info_connection.setText(message);
+        loading_save.setVisibility(View.INVISIBLE);
+        btn_save_trip.setEnabled(true);
+    }
+
+    public void TripSavedSuccessfully(){
+        txt_info_connection.setVisibility(View.VISIBLE);
+        txt_info_connection.setTextColor(Color.GREEN);
+        txt_info_connection.setText("Trip saved successfully");
+        loading_save.setVisibility(View.INVISIBLE);
+        btn_save_trip.setEnabled(true);
     }
 }
