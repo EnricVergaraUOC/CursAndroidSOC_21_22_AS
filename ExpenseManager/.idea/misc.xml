@@ -9,7 +9,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17147922998986828" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_resume.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_trip_edit.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_trip_edit.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_trip_list.xml" value="0.2703804347826087" />
         <entry key="app/src/main/res/layout/activity_trip_users.xml" value="0.2234375" />
         <entry key="app/src/main/res/layout/activity_trip_view.xml" value="0.45" />

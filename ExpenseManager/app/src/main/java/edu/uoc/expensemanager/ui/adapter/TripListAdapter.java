@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
@@ -26,11 +27,11 @@ import edu.uoc.expensemanager.ui.TripViewActivity;
 
 
 public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHolder>{
-    private TripInfo[] listdata;
+    private ArrayList<TripInfo> listData;
     private Context activityContext;
     // RecyclerView recyclerView;
-    public TripListAdapter(TripInfo[] listdata, Context context) {
-        this.listdata = listdata;
+    public TripListAdapter(ArrayList<TripInfo> listData, Context context) {
+        this.listData = listData;
         this.activityContext = context;
     }
     @Override
@@ -43,15 +44,15 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final TripInfo myListData = listdata[position];
-        holder.textView_Desc.setText(listdata[position].decription);
-        holder.textView_Date.setText(listdata[position].date);
-        if (listdata[position].image_url.compareTo("") == 0){
+        final TripInfo myListData = listData.get(position);
+        holder.textView_Desc.setText(listData.get(position).decription);
+        holder.textView_Date.setText(listData.get(position).date);
+        if (listData.get(position).image_url.compareTo("") == 0){
             holder.imageView.setImageResource(R.drawable.trip);
         }else{
             //Uri uri = Uri.parse(listdata[position].image_url);
             //holder.imageView.setImageURI(uri);
-            new DownLoadImageTask(holder.imageView).execute(listdata[position].image_url);
+            new DownLoadImageTask(holder.imageView).execute(listData.get(position).image_url);
         }
         //holder.imageView.setImageResource(listdata[position].());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +75,7 @@ public class TripListAdapter extends RecyclerView.Adapter<TripListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return listdata.length;
+        return listData.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

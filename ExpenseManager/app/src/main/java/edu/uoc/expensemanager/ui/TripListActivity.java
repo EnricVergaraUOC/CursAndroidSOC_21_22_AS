@@ -1,15 +1,29 @@
 package edu.uoc.expensemanager.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.TripInfo;
@@ -18,6 +32,8 @@ import edu.uoc.expensemanager.ui.adapter.TripListAdapter;
 public class TripListActivity extends AppCompatActivity {
     FloatingActionButton btnAddNewTrip;
     ImageButton btnViewProfile;
+    ArrayList<TripInfo> trips = new ArrayList<TripInfo>();
+    TripListAdapter adapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,32 +57,45 @@ public class TripListActivity extends AppCompatActivity {
             }
         });
 
-        String path1 = "https://m.media-amazon.com/images/M/MV5BNzUxNjM4ODI1OV5BMl5BanBnXkFtZTgwNTEwNDE2OTE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path2 = "https://m.media-amazon.com/images/M/MV5BMTUyMDU1MTU2N15BMl5BanBnXkFtZTgwODkyNzQ3MDE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
-        String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
-        String path5 = "https://imagenes.elpais.com/resizer/ignf5hRqPoNrcNeilF3aB9CKy-M=/1960x0/cloudfront-eu-central-1.images.arcpublishing.com/prisa/HE3SMC3L7Z7XENXLHLLKE3CDEA.jpg";
 
-        TripInfo[] myListData = new TripInfo[] {
-            new TripInfo(path5, "(10/17/2021)", "Trip 1", 1),
-            new TripInfo("", "(10/17/2021)", "Trip 2",2),
-            new TripInfo(path2, "(10/17/2021)", "Trip 3",3),
-            new TripInfo("", "(10/17/2021)", "Trip 4",4),
-            new TripInfo(path3, "(10/17/2021)", "Trip 5",5),
-            new TripInfo(path4, "(10/17/2021)", "Trip 6",6),
-            new TripInfo("", "(10/17/2021)", "Trip 7",7),
-            new TripInfo("", "(10/17/2021)", "Trip 8",8),
-            new TripInfo("", "(10/17/2021)", "Trip 9",9),
-            new TripInfo("", "(10/17/2021)", "Trip 10",10),
-            new TripInfo("", "(10/17/2021)", "Trip 11",11),
-            new TripInfo("", "(10/17/2021)", "Trip 12",12)
-        };
 
         RecyclerView recyclerView = findViewById(R.id.trip_list);
-        TripListAdapter adapter = new TripListAdapter(myListData, this);
+        adapter = new TripListAdapter(trips, this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        DoConnection();
+
+    }
+
+    public void DoConnection(){
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference citiesRef = db.collection("trips");
+        citiesRef.whereArrayContains("users", currentUser.getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String,Object> trip = document.getData();
+                                String date = (String) trip.get("date");
+                                String description = (String) trip.get("description");
+                                String image_url = (String) trip.get("img_url");
+                                TripInfo newTrip = new TripInfo(image_url, date, description,document.getId());
+                                trips.add(newTrip);
+                            }
+                            adapter.notifyItemInserted(0);
+                        } else {
+                            String msg_error = task.getException().toString();
+                            Log.w("TripListActivity", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }
