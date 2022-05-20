@@ -3,7 +3,9 @@ package edu.uoc.expensemanager.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
     Button btnRegister;
-    TextView inputUserName;
+    TextView inputEmail;
     TextView inputPwd;
     TextView txt_error;
     private FirebaseAuth mAuth;
@@ -51,20 +53,27 @@ public class LoginActivity extends AppCompatActivity {
         txt_error.setVisibility(View.INVISIBLE);
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_goto_register);
-        inputPwd = findViewById(R.id.input_pwd);
-        inputUserName = findViewById(R.id.input_username);
+        inputPwd = findViewById(R.id.pwd_login);
+        inputEmail= findViewById(R.id.email_login);
 
+        SharedPreferences prefs = LoginActivity.this.getSharedPreferences("general_settings", Context.MODE_PRIVATE);
+        String lastEmailLogged = prefs.getString("last_login_email", null);
+        if (lastEmailLogged != null){
+            inputEmail.setText(lastEmailLogged);
+        }
         
         //Add actions to the buttons:
         btnLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+
                 txt_error.setVisibility(View.INVISIBLE);
-                if (Utils.isEmptyTextView(inputUserName) || Utils.isEmptyTextView(inputPwd)){
+                if (Utils.isEmptyTextView(inputEmail) || Utils.isEmptyTextView(inputPwd)){
                     txt_error.setVisibility(View.VISIBLE);
                     txt_error.setText("Email and pwd can not be empty");
 
                 }else {
-                    String email = inputUserName.getText().toString();
+                    String email = inputEmail.getText().toString();
                     String pwd = inputPwd.getText().toString();
                     mAuth.signInWithEmailAndPassword(email, pwd)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -72,6 +81,12 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        SharedPreferences sharedPref = LoginActivity.this.getSharedPreferences( "general_settings",Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        String email = inputEmail.getText().toString();
+                                        editor.putString("last_login_email", email);
+                                        editor.apply();
+
                                         GoToTripList();
                                     } else {
                                         String errorMessage = task.getException().toString();
