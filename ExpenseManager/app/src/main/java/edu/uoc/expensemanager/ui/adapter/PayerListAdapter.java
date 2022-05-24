@@ -1,12 +1,7 @@
 package edu.uoc.expensemanager.ui.adapter;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +10,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
 import edu.uoc.expensemanager.model.PayerInfo;
 import edu.uoc.expensemanager.ui.ExpenseActivity;
-import edu.uoc.expensemanager.ui.LoginActivity;
-import edu.uoc.expensemanager.ui.TripListActivity;
 
 
 public class PayerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -189,7 +178,7 @@ public class PayerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public RelativeLayout relativeLayout;
         public ViewHolderGeneral(View itemView) {
             super(itemView);
-            this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            this.imageView = (ImageView) itemView.findViewById(R.id.userAvatar);
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
             this.btn_amount = (Button) itemView.findViewById(R.id.btn_amount);

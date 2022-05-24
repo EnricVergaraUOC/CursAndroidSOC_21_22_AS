@@ -75,7 +75,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            this.imageView = (ImageView) itemView.findViewById(R.id.userAvatar);
             this.textView_Desc = (TextView) itemView.findViewById(R.id.textView_description);
             this.textView_Date = (TextView) itemView.findViewById(R.id.textView_date);
             this.textView_Amount = (TextView) itemView.findViewById(R.id.textView_amount);

@@ -1,19 +1,15 @@
 package edu.uoc.expensemanager.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
@@ -40,10 +36,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final UserInfo myListData = listdata.get(position);
+
+        holder.userEmail.setText(myListData.email);
         if (listdata.get(position).url_avatar.compareTo("") == 0){
-            holder.imageView.setImageResource(R.drawable.user_avatar);
+            holder.userAvatar.setImageResource(R.drawable.user_avatar);
         }else{
-            new DownLoadImageTask(holder.imageView).execute(listdata.get(position).url_avatar);
+            new DownLoadImageTask(holder.userAvatar).execute(listdata.get(position).url_avatar);
         }
         //holder.imageView.setImageResource(listdata[position].());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -63,11 +61,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
+        public ImageView userAvatar;
+        public TextView userEmail;
         public RelativeLayout relativeLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            this.userAvatar = (ImageView) itemView.findViewById(R.id.userAvatar);
+            this.userEmail = (TextView) itemView.findViewById(R.id.userEmail);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }

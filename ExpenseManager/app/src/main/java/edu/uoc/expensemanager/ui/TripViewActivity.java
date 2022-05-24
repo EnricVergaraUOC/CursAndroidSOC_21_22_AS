@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,7 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
 import edu.uoc.expensemanager.model.ExpenseInfo;
+import edu.uoc.expensemanager.model.TripInfo;
 import edu.uoc.expensemanager.model.UserInfo;
 import edu.uoc.expensemanager.ui.adapter.ExpenseListAdapter;
 import edu.uoc.expensemanager.ui.adapter.UserListAdapter;
@@ -30,7 +33,9 @@ public class TripViewActivity extends AppCompatActivity {
     TextView txt_Date;
     public ArrayList<UserInfo> users = new ArrayList<UserInfo>();
     ExpenseInfo[] myListData = null;
-
+    TripInfo tripInfo;
+    ImageView tripAvatar;
+    UserListAdapter user_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,7 @@ public class TripViewActivity extends AppCompatActivity {
         btnEditTrip = findViewById(R.id.btn_edit_trip);
         btnAddNewExpense = findViewById(R.id.btn_add_new_expense);
         btnResume = findViewById(R.id.btn_resume);
+        tripAvatar = findViewById(R.id.img_trip);
         btnResume.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent k = new Intent(TripViewActivity.this, ResumeActivity.class);
@@ -63,12 +69,12 @@ public class TripViewActivity extends AppCompatActivity {
         txt_Date = findViewById(R.id.txt_date);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String description = extras.getString("Description");
-            String date = extras.getString("Date");
-            txt_Description.setText(description);
-            txt_Date.setText(date);
-
-            //The key argument here must match that used in the other activity
+            tripInfo = extras.getParcelable("tripInfo");
+            txt_Description.setText(tripInfo.description);
+            txt_Date.setText(tripInfo.date);
+            if (tripInfo.image_url != null && tripInfo.image_url.compareTo("") != 0){
+                new DownLoadImageTask(tripAvatar).execute(tripInfo.image_url);
+            }
         }
 
 
@@ -94,24 +100,27 @@ public class TripViewActivity extends AppCompatActivity {
         recyclerView_expense.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_expense.setAdapter(expense_adapter);
 
-        String path1 = "https://m.media-amazon.com/images/M/MV5BNzUxNjM4ODI1OV5BMl5BanBnXkFtZTgwNTEwNDE2OTE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path2 = "https://m.media-amazon.com/images/M/MV5BMTUyMDU1MTU2N15BMl5BanBnXkFtZTgwODkyNzQ3MDE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
-        String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
 
-        users.add(new UserInfo("Enric", path1, "enric@uoc.edu"));
-        users.add(new UserInfo("Joan", "","joan@uoc.edu"));
-        users.add(new UserInfo("Pepito", "", "pepito@uoc.edu"));
+        for (String user :tripInfo.users)
+        {
+            users.add(new UserInfo("", "", user));
+        }
 
 
         RecyclerView recyclerView_user = findViewById(R.id.user_list);
-        UserListAdapter user_adapter = new UserListAdapter(users, this);
+        user_adapter = new UserListAdapter(users, this);
         recyclerView_user.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_user.setLayoutManager(layoutManager);
         recyclerView_user.setAdapter(user_adapter);
 
+        GetUserInfoFromFirebase();
+    }
+
+
+
+    public void GetUserInfoFromFirebase(){
 
     }
 }

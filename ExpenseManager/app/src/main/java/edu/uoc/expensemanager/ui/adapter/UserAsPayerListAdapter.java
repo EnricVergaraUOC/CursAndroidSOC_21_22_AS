@@ -1,9 +1,6 @@
 package edu.uoc.expensemanager.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +10,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 import edu.uoc.expensemanager.R;
@@ -80,7 +73,7 @@ public class UserAsPayerListAdapter extends RecyclerView.Adapter<UserAsPayerList
             this.txt_user = (TextView) itemView.findViewById(R.id.textView_description);
             this.txt_amount = (TextView) itemView.findViewById(R.id.textView_amount);
             this.txt_toPayOrToReceive = (TextView) itemView.findViewById(R.id.textView_date);
-            this.imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            this.imageView = (ImageView) itemView.findViewById(R.id.userAvatar);
             relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeLayout);
         }
     }

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,8 +73,22 @@ public class TripListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        //TODO alert view to sign out
+        new AlertDialog.Builder(TripListActivity.this)
+                .setTitle("Are you sure you want to sign out?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Nothing to do.
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 
     public void DoConnection(){
@@ -93,7 +109,8 @@ public class TripListActivity extends AppCompatActivity {
                                 String date = (String) trip.get("date");
                                 String description = (String) trip.get("description");
                                 String image_url = (String) trip.get("img_url");
-                                TripInfo newTrip = new TripInfo(image_url, date, description,document.getId());
+                                ArrayList users = (ArrayList) trip.get("users");
+                                TripInfo newTrip = new TripInfo(image_url, date, description,document.getId(), users);
                                 trips.add(newTrip);
                             }
                             adapter.notifyItemInserted(0);
