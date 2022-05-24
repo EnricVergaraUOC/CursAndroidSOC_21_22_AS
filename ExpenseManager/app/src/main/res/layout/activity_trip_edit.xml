@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/img_trip"
+        android:id="@+id/img_avatar"
         android:layout_width="210dp"
         android:layout_height="170dp"
         android:layout_marginStart="16dp"
@@ -81,8 +81,8 @@
         android:layout_height="37dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_trip"
-        app:layout_constraintEnd_toEndOf="@+id/img_trip"
+        app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
+        app:layout_constraintEnd_toEndOf="@+id/img_avatar"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <TextView

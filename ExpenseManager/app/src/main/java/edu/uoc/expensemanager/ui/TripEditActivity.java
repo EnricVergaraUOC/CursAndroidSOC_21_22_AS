@@ -82,7 +82,7 @@ public class TripEditActivity extends AppCompatActivity {
         loading_save = findViewById(R.id.loading_save);
         loading_save.setVisibility(View.INVISIBLE);
         btn_save_trip = findViewById(R.id.btn_save_trip);
-        tripImage = findViewById(R.id.img_trip);
+        tripImage = findViewById(R.id.img_avatar);
         tripDesc = findViewById(R.id.input_tripDesc);
         btn_changeImage = findViewById(R.id.btn_changeImage);
         btn_selectDate = findViewById(R.id.btn_selectDate);
@@ -221,16 +221,17 @@ public class TripEditActivity extends AppCompatActivity {
                     if (resultCode == RESULT_OK && data != null) {
                         if (resultCode == RESULT_OK && data != null) {
                             avatar = data.getData();
+                            Bitmap bitmap = null;
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(
+                                        this.getContentResolver(), avatar);
 
-                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                            if (avatar != null) {
-                                Cursor cursor = getContentResolver().query(avatar, filePathColumn, null, null, null);
-                                if (cursor != null) {
-                                    cursor.moveToFirst();
-                                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                    String picturePath = cursor.getString(columnIndex);
-                                    tripImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                }
+                            } catch (Exception e) {
+                                // Manage exception ...
+                            }
+
+                            if (bitmap != null) {
+                                tripImage.setImageBitmap(bitmap);
                             }
                         }
                     }

@@ -69,6 +69,12 @@ public class TripListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        //TODO alert view to sign out
+    }
+
     public void DoConnection(){
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

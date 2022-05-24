@@ -4,16 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.Utilities.Utils;
@@ -26,9 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
     TextView txt_error;
     private FirebaseAuth mAuth;
 
-    public void kk (){
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 txt_error.setVisibility(View.INVISIBLE);
                 if (Utils.isEmptyTextView(inputUserName) || Utils.isEmptyTextView(inputPwd)){
-                    txt_error.setVisibility(View.VISIBLE);
-                    txt_error.setText("Email and pwd can not be empty");
+                    ShowErrorMessage("Email and pwd can not be empty");
 
                 }else {
                     mAuth.createUserWithEmailAndPassword(inputUserName.getText().toString(), inputPwd.getText().toString())
@@ -56,16 +62,47 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
-                                        finish();
+                                        CreateNewUser();
+
                                     } else {
                                         String errorMessage = task.getException().toString();
-                                        txt_error.setVisibility(View.VISIBLE);
-                                        txt_error.setText(errorMessage);
+                                        ShowErrorMessage(errorMessage);
                                     }
                                 }
                             });
                 }
             }
         });
+    }
+
+    public void CreateNewUser(){
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", inputUserName.getText().toString());
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Add a new document with a generated ID
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String error = e.toString();
+                        ShowErrorMessage(error);
+                    }
+                });
+
+
+    }
+
+    public void ShowErrorMessage(String msg){
+        txt_error.setVisibility(View.VISIBLE);
+        txt_error.setText(msg);
     }
 }
