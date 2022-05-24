@@ -86,13 +86,10 @@
         android:id="@+id/expense_list"
         android:layout_width="396dp"
         android:layout_height="211dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_resume"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_list"
-        app:layout_constraintVertical_bias="0.837" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_list"
@@ -108,13 +105,13 @@
 
     <Button
         android:id="@+id/btn_resume"
-        android:layout_width="94dp"
-        android:layout_height="36dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="104dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
         android:text="Resume"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

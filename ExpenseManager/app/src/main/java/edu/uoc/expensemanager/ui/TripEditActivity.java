@@ -123,7 +123,6 @@ public class TripEditActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         String date = year + "-" + (monthOfYear + 1 < 10 ? "0" : "") + (monthOfYear + 1) + "-"
                                 + (dayOfMonth < 10 ? "0" : "") + dayOfMonth;
-                        //Toast.makeText(view.getContext(),"Date selected: "+date,Toast.LENGTH_LONG).show();
                         selectedDate = date;
                         txt_tripDate.setText("Fecha:  "+date);
                     }

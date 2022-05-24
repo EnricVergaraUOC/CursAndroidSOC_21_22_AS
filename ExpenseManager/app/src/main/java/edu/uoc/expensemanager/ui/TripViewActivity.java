@@ -1,18 +1,23 @@
 package edu.uoc.expensemanager.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +54,7 @@ public class TripViewActivity extends AppCompatActivity {
     TripInfo tripInfo;
     ImageView tripAvatar;
     UserListAdapter user_adapter;
+    Button btn_add_new_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,32 @@ public class TripViewActivity extends AppCompatActivity {
         btnAddNewExpense = findViewById(R.id.btn_add_new_expense);
         btnResume = findViewById(R.id.btn_resume);
         tripAvatar = findViewById(R.id.img_trip);
+        btn_add_new_user = findViewById(R.id.btn_add_new_user);
+        btn_add_new_user.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TripViewActivity.this);
+                builder.setTitle("Enter the email of the user you want to add to the trip:");
+
+                final EditText input = new EditText(TripViewActivity.this);
+                input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CheckIfUserExistOnFirebase(input.getText().toString());
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
         btnResume.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent k = new Intent(TripViewActivity.this, ResumeActivity.class);
@@ -170,6 +202,39 @@ public class TripViewActivity extends AppCompatActivity {
                         } else {
                             String msg_error = task.getException().toString();
                             Log.w("TripListActivity", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void CheckIfUserExistOnFirebase(String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
+        List<String> _users = new ArrayList<String>();
+        for (String usr:tripInfo.users) {
+            _users.add(usr);
+        }
+
+        usersRef.whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            users.clear();
+                            boolean userExist = false;
+                            if (task.getResult().size() != 0){
+                                userExist = true;
+                            }
+
+                            if (userExist){
+                                Toast.makeText(TripViewActivity.this,"OKOKOKOKOKOK",Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(TripViewActivity.this,"User: "+ email + "is not in the app",Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            String msg_error = task.getException().toString();
+                            Toast.makeText(TripViewActivity.this,"Error connecting to the database: "+task.getException(),Toast.LENGTH_LONG).show();
                         }
                     }
                 });
