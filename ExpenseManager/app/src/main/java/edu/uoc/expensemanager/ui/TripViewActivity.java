@@ -20,11 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -228,7 +232,7 @@ public class TripViewActivity extends AppCompatActivity {
                             }
 
                             if (userExist){
-                                Toast.makeText(TripViewActivity.this,"OKOKOKOKOKOK",Toast.LENGTH_LONG).show();
+                                UpdateUserListOnFirebase(email);
                             }else{
                                 Toast.makeText(TripViewActivity.this,"User: "+ email + "is not in the app",Toast.LENGTH_LONG).show();
                             }
@@ -236,6 +240,25 @@ public class TripViewActivity extends AppCompatActivity {
                             String msg_error = task.getException().toString();
                             Toast.makeText(TripViewActivity.this,"Error connecting to the database: "+task.getException(),Toast.LENGTH_LONG).show();
                         }
+                    }
+                });
+    }
+
+    public void UpdateUserListOnFirebase(String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference tripRef = db.collection("trips").document(tripInfo.tripID);
+        tripRef.update("users", FieldValue.arrayUnion(email))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        tripInfo.users.add(email);
+                        GetUserInfoFromFirebase();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(TripViewActivity.this,"Error connecting to the database: "+e.toString(),Toast.LENGTH_LONG).show();
                     }
                 });
     }
