@@ -1,20 +1,33 @@
 package edu.uoc.expensemanager.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
@@ -122,5 +135,43 @@ public class TripViewActivity extends AppCompatActivity {
 
     public void GetUserInfoFromFirebase(){
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
+        List<String> _users = new ArrayList<String>();
+        for (String usr:tripInfo.users) {
+            _users.add(usr);
+        }
+
+        usersRef.whereIn("email", _users)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            users.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String,Object> usr = document.getData();
+                                String email = (String) usr.get("email");
+                                String imgURL = (String) usr.get("imgURL");
+                                String userName = (String) usr.get("userName");
+                                if (email == null) {
+                                    email = "";
+                                }
+                                if (imgURL == null){
+                                    imgURL = "";
+                                }
+                                if (userName == null){
+                                    userName = "";
+                                }
+
+                                users.add(new UserInfo(userName, imgURL, email));
+                            }
+                            user_adapter.notifyDataSetChanged();
+                        } else {
+                            String msg_error = task.getException().toString();
+                            Log.w("TripListActivity", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }

@@ -10,7 +10,6 @@ public class UserInfo implements Parcelable {
     public int amountPayed;
     public int toPayOrToReceive;
 
-
     @Override
     public String toString() {
         return name;
@@ -24,7 +23,7 @@ public class UserInfo implements Parcelable {
         this.toPayOrToReceive = 0;
     }
 
-    protected UserInfo(Parcel in) {
+    public UserInfo(Parcel in) {
         name = in.readString();
         url_avatar = in.readString();
     }
