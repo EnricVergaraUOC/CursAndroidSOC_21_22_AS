@@ -174,7 +174,7 @@ public class ExpenseActivity extends AppCompatActivity  {
                     if (payers.size() == 0){
                         amount = totalAmount;
                     }
-                    PayerInfo newPayer = new PayerInfo("",user.name,"",amount);
+                    PayerInfo newPayer = new PayerInfo(user.url_avatar,user.name,user.email,amount);
                     payers.add(newPayer);
                     if (payers.size() == 1) {
                         adapter.notifyItemChanged(payers.size()-1);
