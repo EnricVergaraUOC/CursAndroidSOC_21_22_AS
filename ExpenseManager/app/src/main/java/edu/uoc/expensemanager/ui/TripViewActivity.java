@@ -110,6 +110,11 @@ public class TripViewActivity extends AppCompatActivity {
         btnAddNewExpense.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent k = new Intent(TripViewActivity.this, ExpenseActivity.class);
+                k.putExtra("Description","");
+                k.putExtra("Date","");
+                k.putExtra("Amount",0);
+                k.putExtra("Users", users);
+                k.putExtra("TripID", tripInfo.tripID);
                 startActivity(k);
             }
         });
@@ -144,7 +149,7 @@ public class TripViewActivity extends AppCompatActivity {
         };
 
         RecyclerView recyclerView_expense = findViewById(R.id.expense_list);
-        ExpenseListAdapter expense_adapter = new ExpenseListAdapter(myListData, this, users);
+        ExpenseListAdapter expense_adapter = new ExpenseListAdapter(myListData, this, users, tripInfo.tripID);
         recyclerView_expense.setHasFixedSize(true);
         recyclerView_expense.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_expense.setAdapter(expense_adapter);

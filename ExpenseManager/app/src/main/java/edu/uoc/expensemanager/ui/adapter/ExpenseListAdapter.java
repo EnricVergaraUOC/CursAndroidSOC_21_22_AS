@@ -23,11 +23,13 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
     private ExpenseInfo[] listdata;
     private Context activityContext;
     ArrayList<UserInfo> users;
+    String tripID;
     // RecyclerView recyclerView;
-    public ExpenseListAdapter(ExpenseInfo[] listData, Context context, ArrayList<UserInfo> users) {
+    public ExpenseListAdapter(ExpenseInfo[] listData, Context context, ArrayList<UserInfo> users, String tripID) {
         this.listdata = listData;
         this.users = users;
         this.activityContext = context;
+        this.tripID = tripID;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,6 +54,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                 k.putExtra("Date",myListData.date);
                 k.putExtra("Amount",myListData.totalAmount);
                 k.putExtra("Users", users);
+                k.putExtra("TripID", tripID);
                 activityContext.startActivity(k);
 
                 //Toast.makeText(view.getContext(),"click on item: "+myListData.description,Toast.LENGTH_LONG).show();

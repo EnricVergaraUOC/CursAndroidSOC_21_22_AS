@@ -55,20 +55,23 @@
         android:id="@+id/btn_expense_save"
         android:layout_width="130dp"
         android:layout_height="69dp"
-        android:layout_marginBottom="16dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/payer_list"
-        android:layout_width="381dp"
-        android:layout_height="262dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_expense_save"
+        android:layout_width="378dp"
+        android:layout_height="204dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_warning" />
 
     <EditText
         android:id="@+id/txtf_amount"
@@ -93,6 +96,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtf_amount" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="408dp"
         android:layout_height="46dp"
         android:layout_marginTop="36dp"
@@ -131,14 +135,14 @@
         android:id="@+id/lbl_warning"
         android:layout_width="352dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="24dp"
         android:textAlignment="center"
         android:textColor="#C10D0D"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/payer_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <ProgressBar
         android:id="@+id/progressBar"
