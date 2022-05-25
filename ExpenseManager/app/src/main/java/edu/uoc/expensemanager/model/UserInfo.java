@@ -3,29 +3,58 @@ package edu.uoc.expensemanager.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class UserInfo implements Parcelable {
+import androidx.annotation.NonNull;
+
+public class UserInfo implements Parcelable{
     public String name;
     public String email;
     public String url_avatar;
     public int amountPayed;
     public int toPayOrToReceive;
 
+    public UserInfo(String email){
+        this.email = email;
+        this.url_avatar = "";
+        this.name = "";
+    }
+
+    public UserInfo(String userName, String imgURL, String email){
+        this.email = email;
+        this.name = userName;
+        this.url_avatar = imgURL;
+    }
+
+    protected UserInfo(Parcel in) {
+        name = in.readString();
+        email = in.readString();
+        url_avatar = in.readString();
+        amountPayed = in.readInt();
+        toPayOrToReceive = in.readInt();
+    }
+
+    @NonNull
     @Override
     public String toString() {
-        return name;
+        if (name != null && name.compareTo("") != 0){
+            return name;
+        }else{
+            return email;
+        }
     }
 
-    public UserInfo(String name, String url_avatar, String email){
-        this.name = name;
-        this.url_avatar = url_avatar;
-        this.email = email;
-        this.amountPayed = 0;
-        this.toPayOrToReceive = 0;
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(url_avatar);
+        dest.writeInt(amountPayed);
+        dest.writeInt(toPayOrToReceive);
     }
 
-    public UserInfo(Parcel in) {
-        name = in.readString();
-        url_avatar = in.readString();
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
@@ -39,15 +68,4 @@ public class UserInfo implements Parcelable {
             return new UserInfo[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(url_avatar);
-    }
 }

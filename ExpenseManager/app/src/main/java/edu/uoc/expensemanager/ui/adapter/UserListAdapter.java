@@ -38,7 +38,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         final UserInfo myListData = listdata.get(position);
 
         holder.userEmail.setText(myListData.email);
-        if (listdata.get(position).url_avatar.compareTo("") == 0){
+        if (listdata.get(position).url_avatar!= null && listdata.get(position).url_avatar.compareTo("") == 0){
             holder.userAvatar.setImageResource(R.drawable.user_avatar);
         }else{
             new DownLoadImageTask(holder.userAvatar).execute(listdata.get(position).url_avatar);

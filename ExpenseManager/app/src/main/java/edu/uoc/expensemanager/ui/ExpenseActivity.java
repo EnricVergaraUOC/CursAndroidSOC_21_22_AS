@@ -1,5 +1,6 @@
 package edu.uoc.expensemanager.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +26,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.PayerInfo;
@@ -45,7 +56,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     Spinner payer_spinner;
     Integer totalAmount;
     ProgressBar progressBar;
-
+    String tripID;
     int spinnerCurrentIndexSelected = 0;
 
 
@@ -111,9 +122,8 @@ public class ExpenseActivity extends AppCompatActivity  {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                 }else{
-                    progressBar.setVisibility(View.VISIBLE);
-                    btnSave.setEnabled(false);
-                    DoConnection();
+
+                    CreateNewExpenseOnFirebase();
                 }
             }
         });
@@ -122,7 +132,7 @@ public class ExpenseActivity extends AppCompatActivity  {
             String description = extras.getString("Description");
             String date = extras.getString("Date");
             totalAmount = extras.getInt("Amount");
-
+            tripID = extras.getString("TripID");
             txt_description.setText(description);
             txt_date.setText(date);
             txt_amount.setText("" + totalAmount);
@@ -237,24 +247,60 @@ public class ExpenseActivity extends AppCompatActivity  {
 
         }
     }
+    public void ConnectionFinished(){
+        progressBar.setVisibility(View.INVISIBLE);
+        btnSave.setEnabled(true);
+    }
 
-    public void DoConnection(){
-        //TODO.. send data to firebase and activate activity indicator while
-        // waiting server response
-        final Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.INVISIBLE);
-                btnSave.setEnabled(true);
-                if (savedCorrectly){
-                    Toast.makeText(ExpenseActivity.this,"Expense saved successfully",Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(ExpenseActivity.this,"Error trying to save the Expense",Toast.LENGTH_LONG).show();
-                    savedCorrectly = true;
-                }
-            }
-        }, 1500); //1'5 seconds
+    public void CreateNewExpenseOnFirebase(){
+        progressBar.setVisibility(View.VISIBLE);
+        btnSave.setEnabled(false);
+        // Create a new user with a first and last name
+        Map<String, Object> expense = new HashMap<>();
+        expense.put("tripID",tripID );
+        expense.put("amount",txt_amount.getText().toString() );
+        expense.put("date",txt_date.getText().toString() );
+        expense.put("description",txt_description.getText().toString() );
 
+        List payers_ = new ArrayList();
+        for (PayerInfo payer :payers)
+        {
+            payers_.add(payer);
+        }
+        expense.put("payers", payers_);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Add a new document with a generated ID
+        db.collection("expenses")
+                .add(expense)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String doc_id = documentReference.getId();
+                        Log.d("TripEditActivity", "DocumentSnapshot added with ID: " + doc_id);
+                        ExpenseSavedSuccessfully();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String error = e.toString();
+                        ShowErrorStatus(error);
+                    }
+                });
+    }
+
+    public void ShowErrorStatus(String msg){
+        lbl_warning.setVisibility(View.VISIBLE);
+        lbl_warning.setTextColor(Color.RED);
+        lbl_warning.setText(msg);
+        ConnectionFinished();
+    }
+
+    public void ExpenseSavedSuccessfully(){
+        lbl_warning.setVisibility(View.VISIBLE);
+        lbl_warning.setTextColor(Color.GREEN);
+        lbl_warning.setText("Expense Saved successfully");
+        ConnectionFinished();
     }
 }

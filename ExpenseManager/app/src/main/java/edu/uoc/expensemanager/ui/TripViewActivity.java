@@ -155,9 +155,9 @@ public class TripViewActivity extends AppCompatActivity {
         recyclerView_expense.setAdapter(expense_adapter);
 
 
-        for (String user :tripInfo.users)
+        for (String email :tripInfo.users)
         {
-            users.add(new UserInfo("", "", user));
+            users.add(new UserInfo(email));
         }
 
 
