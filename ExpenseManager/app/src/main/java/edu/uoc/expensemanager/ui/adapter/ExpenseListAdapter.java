@@ -20,12 +20,12 @@ import edu.uoc.expensemanager.ui.ExpenseActivity;
 
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>{
-    private ExpenseInfo[] listdata;
+    private ArrayList<ExpenseInfo> listdata;
     private Context activityContext;
     ArrayList<UserInfo> users;
     String tripID;
     // RecyclerView recyclerView;
-    public ExpenseListAdapter(ExpenseInfo[] listData, Context context, ArrayList<UserInfo> users, String tripID) {
+    public ExpenseListAdapter(ArrayList<ExpenseInfo> listData, Context context, ArrayList<UserInfo> users, String tripID) {
         this.listdata = listData;
         this.users = users;
         this.activityContext = context;
@@ -41,11 +41,11 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ExpenseInfo myListData = listdata[position];
-        holder.textView_Desc.setText(listdata[position].description);
-        holder.textView_Date.setText(listdata[position].date);
-        holder.textView_Amount.setText(""+listdata[position].totalAmount + " €");
-        //holder.imageView.setImageResource(listdata[position].());
+        final ExpenseInfo myListData = listdata.get(position);
+        holder.textView_Desc.setText(listdata.get(position).description);
+        holder.textView_Date.setText(listdata.get(position).date);
+        holder.textView_Amount.setText(""+listdata.get(position).totalAmount + " €");
+
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,13 +53,10 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                 k.putExtra("Description",myListData.description);
                 k.putExtra("Date",myListData.date);
                 k.putExtra("Amount",myListData.totalAmount);
+                k.putExtra("Payers", myListData.payers);
                 k.putExtra("Users", users);
                 k.putExtra("TripID", tripID);
                 activityContext.startActivity(k);
-
-                //Toast.makeText(view.getContext(),"click on item: "+myListData.description,Toast.LENGTH_LONG).show();
-                //listdata[holder.getAdapterPosition()].setDescription("KAKAK");
-                //notifyItemChanged(holder.getAdapterPosition());
             }
         });
     }
@@ -67,7 +64,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     @Override
     public int getItemCount() {
-        return listdata.length;
+        return listdata.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

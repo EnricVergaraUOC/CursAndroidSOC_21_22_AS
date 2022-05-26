@@ -74,7 +74,13 @@ public class PayerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             break;
             case 1: {
                 ViewHolderGeneral holder = (ViewHolderGeneral)holder_;
-                final PayerInfo myListData = listdata.get(position);
+                //String image, String name, String email, int amount){
+                final PayerInfo myListData  = new PayerInfo("","","",0);
+                myListData.image_url = listdata.get(position).image_url;
+                myListData.name = listdata.get(position).name;
+                myListData.email = listdata.get(position).email;
+                myListData.amount = listdata.get(position).amount;
+
                 holder.textView_Desc.setText(listdata.get(position).name);
                 holder.textView_Date.setText(listdata.get(position).email + " " + listdata.get(position).amount);
                 if (listdata.get(position).image_url.compareTo("") == 0){

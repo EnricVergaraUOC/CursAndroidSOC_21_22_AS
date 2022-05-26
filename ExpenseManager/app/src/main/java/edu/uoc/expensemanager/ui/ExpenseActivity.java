@@ -58,6 +58,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     ProgressBar progressBar;
     String tripID;
     int spinnerCurrentIndexSelected = 0;
+    boolean editionMode;
 
 
     //To debug
@@ -67,6 +68,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
+        editionMode = false;
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         txt_amount = findViewById(R.id.txtf_amount);
         txt_date = findViewById(R.id.txtf_date);;
@@ -130,6 +132,13 @@ public class ExpenseActivity extends AppCompatActivity  {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String description = extras.getString("Description");
+            if (description != null && description.compareTo("")!= 0){
+                editionMode = true;
+            }
+            if (editionMode){
+                btnSave.setText("Update");
+                payers = extras.getParcelableArrayList("Payers");
+            }
             String date = extras.getString("Date");
             totalAmount = extras.getInt("Amount");
             tripID = extras.getString("TripID");
@@ -201,14 +210,6 @@ public class ExpenseActivity extends AppCompatActivity  {
 
             }
         });
-
-
-
-
-        String path1 = "https://m.media-amazon.com/images/M/MV5BNzUxNjM4ODI1OV5BMl5BanBnXkFtZTgwNTEwNDE2OTE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path2 = "https://m.media-amazon.com/images/M/MV5BMTUyMDU1MTU2N15BMl5BanBnXkFtZTgwODkyNzQ3MDE@._V1_SX150_CR0,0,150,150_.jpg";
-        String path3 = "https://m.media-amazon.com/images/M/MV5BMTk1MjM5NDg4MF5BMl5BanBnXkFtZTcwNDg1OTQ4Nw@@._V1_SX150_CR0,0,150,150_.jpg";
-        String path4 = "https://m.media-amazon.com/images/M/MV5BMjExNjY5NDY0MV5BMl5BanBnXkFtZTgwNjQ1Mjg1MTI@._V1_SX150_CR0,0,150,150_.jpg";
 
 
         RecyclerView recyclerView = findViewById(R.id.payer_list);

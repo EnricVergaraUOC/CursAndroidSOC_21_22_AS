@@ -33,14 +33,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
 import edu.uoc.expensemanager.model.ExpenseInfo;
+import edu.uoc.expensemanager.model.PayerInfo;
 import edu.uoc.expensemanager.model.TripInfo;
 import edu.uoc.expensemanager.model.UserInfo;
 import edu.uoc.expensemanager.ui.adapter.ExpenseListAdapter;
@@ -54,11 +57,12 @@ public class TripViewActivity extends AppCompatActivity {
     TextView txt_Description;
     TextView txt_Date;
     public ArrayList<UserInfo> users = new ArrayList<UserInfo>();
-    ExpenseInfo[] myListData = null;
+    ArrayList<ExpenseInfo> myListData = new ArrayList<ExpenseInfo>();
     TripInfo tripInfo;
     ImageView tripAvatar;
     UserListAdapter user_adapter;
     Button btn_add_new_user;
+    ExpenseListAdapter expense_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,25 +135,8 @@ public class TripViewActivity extends AppCompatActivity {
             }
         }
 
-
-
-        myListData = new ExpenseInfo[] {
-                new ExpenseInfo("Expense1", "(10/17/2021)",  101, null),
-                new ExpenseInfo("Expense2", "(10/17/2021)",  102, null),
-                new ExpenseInfo("Expense3", "(10/17/2021)",  103, null),
-                new ExpenseInfo("Expense4", "(10/17/2021)",  104, null),
-                new ExpenseInfo("Expense5", "(10/17/2021)",  105, null),
-                new ExpenseInfo("Expense6", "(10/17/2021)",  106, null),
-                new ExpenseInfo("Expense7", "(10/17/2021)",  107, null),
-                new ExpenseInfo("Expense8", "(10/17/2021)",  108, null),
-                new ExpenseInfo("Expense9", "(10/17/2021)",  109, null),
-                new ExpenseInfo("Expense10", "(10/17/2021)", 110, null),
-                new ExpenseInfo("Expense11", "(10/17/2021)", 111, null),
-                new ExpenseInfo("Expense12", "(10/17/2021)", 112, null)
-        };
-
         RecyclerView recyclerView_expense = findViewById(R.id.expense_list);
-        ExpenseListAdapter expense_adapter = new ExpenseListAdapter(myListData, this, users, tripInfo.tripID);
+        expense_adapter = new ExpenseListAdapter(myListData, this, users, tripInfo.tripID);
         recyclerView_expense.setHasFixedSize(true);
         recyclerView_expense.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_expense.setAdapter(expense_adapter);
@@ -208,6 +195,7 @@ public class TripViewActivity extends AppCompatActivity {
                                 users.add(new UserInfo(userName, imgURL, email));
                             }
                             user_adapter.notifyDataSetChanged();
+                            GetExpensesFromFirebase();
                         } else {
                             String msg_error = task.getException().toString();
                             Log.w("TripListActivity", "Error getting documents.", task.getException());
@@ -264,6 +252,51 @@ public class TripViewActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(TripViewActivity.this,"Error connecting to the database: "+e.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    void GetExpensesFromFirebase(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("expenses");
+
+        usersRef.whereEqualTo("tripID", tripInfo.tripID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> expense = document.getData();
+                                String amount = (String) expense.get("amount");
+                                int _amount = 0;
+                                try{
+                                    _amount = Integer.parseInt(amount);
+
+                                }
+                                catch (NumberFormatException ex){
+                                    ex.printStackTrace();
+                                }
+                                String date = (String) expense.get("date");
+                                String description = (String) expense.get("description");
+                                List<HashMap<String,Object>> _payers = (List<HashMap<String,Object>>) expense.get("payers");
+
+
+                                ArrayList<PayerInfo> payers = new ArrayList<PayerInfo>();
+                                for(int i = 0; i < _payers.size(); i++){
+                                    Long aux_amount =  (Long) _payers.get(i).get("amount");
+                                    String aux_email =  (String) _payers.get(i).get("email");
+                                    String aux_name =  (String) _payers.get(i).get("name");
+                                    String aux_image_url =  (String) _payers.get(i).get("image_url");
+                                    //public PayerInfo(String image, String name, String email, int amount){
+                                    payers.add(new PayerInfo(aux_image_url, aux_name, aux_email, aux_amount.intValue()));
+
+                                }
+                                ExpenseInfo newExpense = new ExpenseInfo(description,date,_amount,payers);
+                                myListData.add(newExpense);
+                            }
+                            expense_adapter.notifyDataSetChanged();
+                        }
                     }
                 });
     }
