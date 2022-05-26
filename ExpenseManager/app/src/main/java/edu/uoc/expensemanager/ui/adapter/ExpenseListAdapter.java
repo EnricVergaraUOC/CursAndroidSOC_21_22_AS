@@ -17,19 +17,21 @@ import edu.uoc.expensemanager.R;
 import edu.uoc.expensemanager.model.ExpenseInfo;
 import edu.uoc.expensemanager.model.UserInfo;
 import edu.uoc.expensemanager.ui.ExpenseActivity;
+import edu.uoc.expensemanager.ui.TripViewActivity;
 
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>{
     private ArrayList<ExpenseInfo> listdata;
-    private Context activityContext;
+    private TripViewActivity activity;
     ArrayList<UserInfo> users;
     String tripID;
     // RecyclerView recyclerView;
-    public ExpenseListAdapter(ArrayList<ExpenseInfo> listData, Context context, ArrayList<UserInfo> users, String tripID) {
+    public ExpenseListAdapter(ArrayList<ExpenseInfo> listData, TripViewActivity activity, ArrayList<UserInfo> users, String tripID) {
         this.listdata = listData;
         this.users = users;
-        this.activityContext = context;
+        this.activity = activity;
         this.tripID = tripID;
+
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +51,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent k = new Intent(activityContext, ExpenseActivity.class);
+                Intent k = new Intent(activity, ExpenseActivity.class);
                 k.putExtra("Description",expenseData.description);
                 k.putExtra("Date",expenseData.date);
                 k.putExtra("Amount",expenseData.totalAmount);
@@ -57,7 +59,9 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
                 k.putExtra("Users", users);
                 k.putExtra("TripID", tripID);
                 k.putExtra("ExpenseID", expenseData.expenseID);
-                activityContext.startActivity(k);
+
+
+                activity.mStartForResult.launch(k);
             }
         });
     }

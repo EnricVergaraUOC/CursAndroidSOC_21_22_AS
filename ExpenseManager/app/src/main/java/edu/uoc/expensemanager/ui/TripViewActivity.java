@@ -1,11 +1,16 @@
 package edu.uoc.expensemanager.ui;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,6 +68,18 @@ public class TripViewActivity extends AppCompatActivity {
     UserListAdapter user_adapter;
     Button btn_add_new_user;
     ExpenseListAdapter expense_adapter;
+
+    public ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 100) {
+                        myListData.clear();
+                        GetUserInfoFromFirebase();
+                    }
+                }
+            });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +175,7 @@ public class TripViewActivity extends AppCompatActivity {
 
         GetUserInfoFromFirebase();
     }
+
 
 
 

@@ -61,6 +61,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     int spinnerCurrentIndexSelected = 0;
     boolean editionMode;
 
+    boolean changeSomething = false;
 
     //To debug
     boolean savedCorrectly = false;
@@ -338,6 +339,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     }
 
     public void ExpenseSavedSuccessfully(){
+        changeSomething = true;
         lbl_warning.setVisibility(View.VISIBLE);
         lbl_warning.setTextColor(Color.GREEN);
         if (editionMode){
@@ -347,5 +349,14 @@ public class ExpenseActivity extends AppCompatActivity  {
         }
 
         ConnectionFinished();
+    }
+
+    public void onBackPressed() {
+        if (changeSomething){
+            Intent data = getIntent();
+            setResult(100, data);
+        }
+
+        finish();
     }
 }

@@ -88,23 +88,24 @@ public class PayerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.btn_amount.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
 
+                        int pos = holder.getAdapterPosition();
                         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                        builder.setTitle("Amount for " +  listdata.get(position).name + ":");
+                        builder.setTitle("Amount for " +  listdata.get(pos).name + ":");
                         View viewInflated = LayoutInflater.from(activity).inflate(R.layout.amount_input, (ViewGroup) null, false);
                         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                        input.setText(""+listdata.get(position).amount);
+                        input.setText(""+listdata.get(pos).amount);
                         builder.setView(viewInflated);
 
                         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                int pos = holder.getAdapterPosition();
                                 dialog.dismiss();
                                 String str = input.getText().toString();
                                 try{
                                     int number = Integer.parseInt(str);
                                     System.out.println(number);
-                                    listdata.get(position).amount = number;
-                                    int pos = holder.getAdapterPosition();
+                                    listdata.get(pos).amount = number;
                                     PayerListAdapter.this.notifyItemChanged(pos);
                                     activity.updateLabelWarning();
                                 }
@@ -127,9 +128,9 @@ public class PayerListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 holder.btn_delete.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-
+                        int pos = holder.getAdapterPosition();
                         new AlertDialog.Builder(activity)
-                                .setTitle("Do you really want to delete the payer " +  listdata.get(position).name + "?")
+                                .setTitle("Do you really want to delete the payer " +  listdata.get(pos).name + "?")
                                 .setMessage("")
 
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
