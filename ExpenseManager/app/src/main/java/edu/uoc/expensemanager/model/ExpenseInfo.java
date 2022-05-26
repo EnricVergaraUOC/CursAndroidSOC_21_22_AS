@@ -11,11 +11,14 @@ public class ExpenseInfo  {
     public String date;
     public int totalAmount;
     public ArrayList<PayerInfo> payers;
+    public String expenseID;
 
-    public ExpenseInfo(String description,
+    public ExpenseInfo(String expenseID,
+                       String description,
                        String date,
                        int amount,
                        ArrayList<PayerInfo> payers){
+        this.expenseID = expenseID;
         this.date = date;
         this.description = description;
         this.totalAmount = amount;

@@ -292,7 +292,8 @@ public class TripViewActivity extends AppCompatActivity {
                                     payers.add(new PayerInfo(aux_image_url, aux_name, aux_email, aux_amount.intValue()));
 
                                 }
-                                ExpenseInfo newExpense = new ExpenseInfo(description,date,_amount,payers);
+
+                                ExpenseInfo newExpense = new ExpenseInfo(document.getId(), description,date,_amount,payers);
                                 myListData.add(newExpense);
                             }
                             expense_adapter.notifyDataSetChanged();

@@ -41,7 +41,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ExpenseInfo myListData = listdata.get(position);
+        final ExpenseInfo expenseData = listdata.get(position);
         holder.textView_Desc.setText(listdata.get(position).description);
         holder.textView_Date.setText(listdata.get(position).date);
         holder.textView_Amount.setText(""+listdata.get(position).totalAmount + " €");
@@ -50,12 +50,13 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
             @Override
             public void onClick(View view) {
                 Intent k = new Intent(activityContext, ExpenseActivity.class);
-                k.putExtra("Description",myListData.description);
-                k.putExtra("Date",myListData.date);
-                k.putExtra("Amount",myListData.totalAmount);
-                k.putExtra("Payers", myListData.payers);
+                k.putExtra("Description",expenseData.description);
+                k.putExtra("Date",expenseData.date);
+                k.putExtra("Amount",expenseData.totalAmount);
+                k.putExtra("Payers", expenseData.payers);
                 k.putExtra("Users", users);
                 k.putExtra("TripID", tripID);
+                k.putExtra("ExpenseID", expenseData.expenseID);
                 activityContext.startActivity(k);
             }
         });

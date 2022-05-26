@@ -41,17 +41,17 @@ public class ResumeActivity extends AppCompatActivity {
         //expenses hardcoded-->
         ArrayList<PayerInfo> payers1 = new ArrayList<PayerInfo>();
         payers1.add(new PayerInfo(null,"enric", "enric@uoc.edu", 101));
-        ExpenseInfo exp1 = new ExpenseInfo("Expense1", "(10/17/2021)",  101, payers1);
+        ExpenseInfo exp1 = new ExpenseInfo("","Expense1", "(10/17/2021)",  101, payers1);
 
         ArrayList<PayerInfo> payers2 = new ArrayList<PayerInfo>();
         payers2.add(new PayerInfo(null,"maria", "maria@uoc.edu", 50));
         payers2.add(new PayerInfo(null,"enric", "enric@uoc.edu", 50));
-        ExpenseInfo exp2 = new ExpenseInfo("Expense1", "(10/17/2021)",  100, payers2);
+        ExpenseInfo exp2 = new ExpenseInfo("","Expense1", "(10/17/2021)",  100, payers2);
 
         ArrayList<PayerInfo> payers3 = new ArrayList<PayerInfo>();
         payers3.add(new PayerInfo(null,"maria", "maria@uoc.edu", 170));
         payers3.add(new PayerInfo(null,"enric", "enric@uoc.edu", 30));
-        ExpenseInfo exp3 = new ExpenseInfo("Expense1", "(10/17/2021)",  200, payers3);
+        ExpenseInfo exp3 = new ExpenseInfo("","Expense1", "(10/17/2021)",  200, payers3);
 
         expenses.add(exp1);
         expenses.add(exp2);

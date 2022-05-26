@@ -56,6 +56,7 @@ public class ExpenseActivity extends AppCompatActivity  {
     Spinner payer_spinner;
     Integer totalAmount;
     ProgressBar progressBar;
+    String expenseID;
     String tripID;
     int spinnerCurrentIndexSelected = 0;
     boolean editionMode;
@@ -124,8 +125,12 @@ public class ExpenseActivity extends AppCompatActivity  {
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                 }else{
+                    if (editionMode){
+                        UpdateExpenseOnFirebase();
+                    }else{
+                        CreateNewExpenseOnFirebase();
+                    }
 
-                    CreateNewExpenseOnFirebase();
                 }
             }
         });
@@ -138,6 +143,8 @@ public class ExpenseActivity extends AppCompatActivity  {
             if (editionMode){
                 btnSave.setText("Update");
                 payers = extras.getParcelableArrayList("Payers");
+                expenseID = extras.getString("ExpenseID");
+
             }
             String date = extras.getString("Date");
             totalAmount = extras.getInt("Amount");
@@ -253,6 +260,38 @@ public class ExpenseActivity extends AppCompatActivity  {
         btnSave.setEnabled(true);
     }
 
+    public void UpdateExpenseOnFirebase(){
+        Map<String, Object> expense = new HashMap<>();
+        expense.put("tripID",tripID );
+        expense.put("amount",txt_amount.getText().toString() );
+        expense.put("date",txt_date.getText().toString() );
+        expense.put("description",txt_description.getText().toString() );
+
+        List payers_ = new ArrayList();
+        for (PayerInfo payer :payers)
+        {
+            payers_.add(payer);
+        }
+        expense.put("payers", payers_);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference expenseRef = db.collection("expenses").document(expenseID);
+        // Add a new document with a generated ID
+        expenseRef
+                .update(expense)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        ExpenseSavedSuccessfully();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        ShowErrorStatus(e.toString());
+                    }
+                });
+    }
     public void CreateNewExpenseOnFirebase(){
         progressBar.setVisibility(View.VISIBLE);
         btnSave.setEnabled(false);
@@ -301,7 +340,12 @@ public class ExpenseActivity extends AppCompatActivity  {
     public void ExpenseSavedSuccessfully(){
         lbl_warning.setVisibility(View.VISIBLE);
         lbl_warning.setTextColor(Color.GREEN);
-        lbl_warning.setText("Expense Saved successfully");
+        if (editionMode){
+            lbl_warning.setText("Expense Updated successfully");
+        }else{
+            lbl_warning.setText("Expense Saved successfully");
+        }
+
         ConnectionFinished();
     }
 }
