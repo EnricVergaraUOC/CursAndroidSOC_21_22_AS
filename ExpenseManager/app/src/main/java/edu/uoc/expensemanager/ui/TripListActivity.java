@@ -122,3 +122,71 @@ public class TripListActivity extends AppCompatActivity {
                 });
     }
 }
+
+/*
+
+void tripsCollectionListing(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference tripsRef = db.collection("trips");
+        tripsRef.whereArrayContains("users", currentUser.getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error!=null){
+                    Toast.makeText(TripListActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for(DocumentChange doc:value.getDocumentChanges()){
+                    if (doc.getType()==DocumentChange.Type.ADDED){
+                        Map<String,Object> map= new HashMap<>();
+                        map=doc.getDocument().getData();
+                        String date = map.get("date").toString();
+                        String description = map.get("description").toString();
+                        String urlPath = map.get("urlPath").toString();
+                        String id=map.get("id").toString();
+                        Trip newTrip = new Trip(urlPath, date, description,id);
+                        trips.add(newTrip);
+                    }else if (doc.getType()==DocumentChange.Type.MODIFIED){
+                        everyID=true;
+                        Map<String,Object> map= new HashMap<>();
+                        map=doc.getDocument().getData();
+                        String date = map.get("date").toString();
+                        String description = map.get("description").toString();
+                        String urlPath = map.get("urlPath").toString();
+                        String id=map.get("id").toString();
+                        for(int i=0;i<trips.size();i++){
+                            if (trips.get(i).getId().equals("0")){
+                                Trip newTrip = new Trip(urlPath, date, description,id);
+                                trips.set(i,newTrip);
+                                everyID=false;
+                                break;
+                            }
+                        }
+                        if (everyID){
+                            int currentPosition=-1;
+                            for(int i=0;i<trips.size();i++){
+                                if (id.equals(trips.get(i).getId())){
+                                    currentPosition=i;
+                                    break;
+                                }
+                            }
+                            Trip newTrip = new Trip(urlPath, date, description,id);
+                            trips.set(currentPosition,newTrip);
+                        }
+                    }else if (doc.getType()==DocumentChange.Type.REMOVED){
+                        Map<String,Object> map= new HashMap<>();
+                        String id=doc.getDocument().getId();
+                        int currentPosition=-1;
+                        for(int i=0;i<trips.size();i++){
+                            if (id.equals(trips.get(i).getId())){
+                                currentPosition=i;
+                                break;
+                            }
+                        }
+                        trips.remove(currentPosition);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+ */
