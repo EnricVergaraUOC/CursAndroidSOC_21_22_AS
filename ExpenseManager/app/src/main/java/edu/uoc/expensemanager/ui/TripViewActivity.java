@@ -67,6 +67,7 @@ public class TripViewActivity extends AppCompatActivity {
     ImageView tripAvatar;
     UserListAdapter user_adapter;
     Button btn_add_new_user;
+    ImageButton btn_delete_trip;
     ExpenseListAdapter expense_adapter;
 
     public ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
@@ -89,8 +90,32 @@ public class TripViewActivity extends AppCompatActivity {
         btnAddNewExpense = findViewById(R.id.btn_add_new_expense);
         btnResume = findViewById(R.id.btn_resume);
         tripAvatar = findViewById(R.id.img_trip);
+        btn_delete_trip = findViewById(R.id.btn_delete_trip);
+        btn_delete_trip.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new android.app.AlertDialog.Builder(TripViewActivity.this)
+                        .setTitle("Deleting trip: " + tripInfo.description)
+                        .setMessage("Do you really want to delete this trip?")
+
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                DeleteTripFromFirebase();
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Cancel operation nothing to do.
+                            }
+                        })
+
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
         btn_add_new_user = findViewById(R.id.btn_add_new_user);
         btn_add_new_user.setOnClickListener(new View.OnClickListener() {
+
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TripViewActivity.this);
                 builder.setTitle("Enter the email of the user you want to add to the trip:");
@@ -316,6 +341,26 @@ public class TripViewActivity extends AppCompatActivity {
                             }
                             expense_adapter.notifyDataSetChanged();
                         }
+                    }
+                });
+    }
+
+    public void DeleteTripFromFirebase(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("trips").document(tripInfo.tripID)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(TripViewActivity.this,"Trip "+ tripInfo.description+" deleted",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Toast.makeText(TripViewActivity.this,"Error trying to delete trip. Retry",Toast.LENGTH_LONG).show();
                     }
                 });
     }
