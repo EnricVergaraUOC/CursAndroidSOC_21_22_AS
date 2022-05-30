@@ -48,7 +48,10 @@ import java.util.List;
 import java.util.Map;
 
 import edu.uoc.expensemanager.R;
+import edu.uoc.expensemanager.Utilities.DownLoadImageTask;
 import edu.uoc.expensemanager.Utilities.Utils;
+import edu.uoc.expensemanager.model.PayerInfo;
+import edu.uoc.expensemanager.model.TripInfo;
 
 public class TripEditActivity extends AppCompatActivity {
 
@@ -62,10 +65,12 @@ public class TripEditActivity extends AppCompatActivity {
     TextView txt_info_connection;
     Uri avatar = null;
     ProgressBar loading_save;
-
+    TripInfo tripInfo;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     private StorageReference mStorageRef;
     private String emailFromCurrentUser = "";
+
+    boolean editMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,18 +106,11 @@ public class TripEditActivity extends AppCompatActivity {
 
         btn_save_trip.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Check if there is information on description and date,
-                if (Utils.isEmptyTextView(tripDesc) || Utils.isEmptyString(selectedDate)){
-                    ShowErrorStatus("Description and date fields are required");
+                if (editMode){
+                    UpdateTrip();
                 }else{
-                    btn_save_trip.setEnabled(false);
-                    loading_save.setVisibility(View.VISIBLE);
-                    txt_info_connection.setVisibility(View.INVISIBLE);
-
-                    CreateNewTripOnFirebase();
+                    CreateNewTrip();
                 }
-
-
 
             }
         });
@@ -130,6 +128,20 @@ public class TripEditActivity extends AppCompatActivity {
                 mDlgDatePicker.show();
             }
         });
+        editMode = false;
+        btn_save_trip.setText("Create");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            tripInfo = extras.getParcelable("tripInfo");
+            tripDesc.setText(tripInfo.description);
+            txt_tripDate.setText("Fecha:  "+tripInfo.date);
+            selectedDate = tripInfo.date;
+            if (tripInfo.image_url != null && tripInfo.image_url.compareTo("") != 0){
+                new DownLoadImageTask(tripImage).execute(tripInfo.image_url);
+            }
+            editMode = true;
+            btn_save_trip.setText("Update");
+        }
     }
 
 
@@ -349,5 +361,59 @@ public class TripEditActivity extends AppCompatActivity {
         txt_info_connection.setText("Trip saved successfully");
         loading_save.setVisibility(View.INVISIBLE);
         btn_save_trip.setEnabled(true);
+    }
+
+    public void CreateNewTrip(){
+        //Check if there is information on description and date,
+        if (Utils.isEmptyTextView(tripDesc) || Utils.isEmptyString(selectedDate)){
+            ShowErrorStatus("Description and date fields are required");
+        }else{
+            btn_save_trip.setEnabled(false);
+            loading_save.setVisibility(View.VISIBLE);
+            txt_info_connection.setVisibility(View.INVISIBLE);
+
+            CreateNewTripOnFirebase();
+        }
+    }
+
+    public void UpdateTrip(){
+        if (Utils.isEmptyTextView(tripDesc) || Utils.isEmptyString(selectedDate)){
+            ShowErrorStatus("Description and date fields are required");
+        }else{
+            btn_save_trip.setEnabled(false);
+            loading_save.setVisibility(View.VISIBLE);
+            txt_info_connection.setVisibility(View.INVISIBLE);
+
+            Map<String, Object> expense = new HashMap<>();
+
+            expense.put("date",selectedDate);
+            expense.put("description",tripDesc.getText().toString() );
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference expenseRef = db.collection("trips").document(tripInfo.tripID);
+            // Add a new document with a generated ID
+            expenseRef
+                    .update(expense)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Intent data = new Intent();
+                            tripInfo.date = selectedDate;
+                            tripInfo.description = tripDesc.getText().toString();
+                            data.putExtra("date",tripInfo.date);
+                            data.putExtra("desc",tripInfo.description);
+                            setResult(200, data);
+
+                            finish();
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            ShowErrorStatus(e.toString());
+                        }
+                    });
+        }
     }
 }

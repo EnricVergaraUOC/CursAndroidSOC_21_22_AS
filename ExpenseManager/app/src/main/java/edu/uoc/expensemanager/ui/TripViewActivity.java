@@ -78,6 +78,13 @@ public class TripViewActivity extends AppCompatActivity {
                     if (result.getResultCode() == 100) {
                         myListData.clear();
                         GetUserInfoFromFirebase();
+                    }else if (result.getResultCode() == 200){
+                        Intent intent = result.getData();
+                        tripInfo.description = result.getData().getStringExtra("desc");
+                        tripInfo.date = result.getData().getStringExtra("date");
+                        txt_Description.setText(tripInfo.description);
+                        txt_Date.setText(tripInfo.date);
+
                     }
                 }
             });
@@ -150,7 +157,9 @@ public class TripViewActivity extends AppCompatActivity {
         btnEditTrip.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent k = new Intent(TripViewActivity.this, TripEditActivity.class);
-                startActivity(k);
+                k.putExtra("tripInfo",tripInfo);
+                mStartForResult.launch(k);
+
             }
         });
         btnAddNewExpense.setOnClickListener(new View.OnClickListener() {
