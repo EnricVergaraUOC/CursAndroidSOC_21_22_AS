@@ -36,7 +36,12 @@ public class UserAsPayerListAdapter extends RecyclerView.Adapter<UserAsPayerList
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final UserInfo myListData = listdata.get(position);
-        holder.txt_user.setText(myListData.name);
+        if (myListData.name.compareTo("") == 0){
+            holder.txt_user.setText(myListData.email);
+        }else{
+            holder.txt_user.setText(myListData.name);
+        }
+
         holder.txt_amount.setText(myListData.amountPayed + " €");
         holder.txt_toPayOrToReceive.setText(myListData.toPayOrToReceive + " €");
 

@@ -37,6 +37,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -150,6 +152,9 @@ public class TripViewActivity extends AppCompatActivity {
         btnResume.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent k = new Intent(TripViewActivity.this, ResumeActivity.class);
+                k.putExtra("expenses",myListData);
+                k.putExtra("users",users);
+
                 startActivity(k);
             }
         });
@@ -361,7 +366,7 @@ public class TripViewActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        DeleteExpensesOfTripFromFirebase();
+                        DeleteImageFromFirebase();
 
                     }
                 })
@@ -396,6 +401,30 @@ public class TripViewActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void DeleteImageFromFirebase(){
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imgRef = storageRef.child("images/trips/"+tripInfo.tripID+".jpg");
+
+
+        // Delete the file
+        imgRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+                DeleteExpensesOfTripFromFirebase();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+                Toast.makeText(TripViewActivity.this,"Error deleting image from trip",Toast.LENGTH_LONG).show();
+                DeleteExpensesOfTripFromFirebase();
+            }
+        });
     }
 
     public void RemoveExpense(String expenseID){
