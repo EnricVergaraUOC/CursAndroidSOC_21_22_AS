@@ -13,6 +13,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 import edu.uoc.mapgame.databinding.ActivityMapsBinding;
@@ -55,7 +57,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET"));
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
-                txtQuestion.setText("Distance is: " + distance);
+                txtQuestion.setText("Distance is: " + distance +" km");
+                Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .add(targetPos, selectedPos));
+
 
             }
         });
