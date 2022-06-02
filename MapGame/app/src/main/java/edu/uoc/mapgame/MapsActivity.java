@@ -7,10 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -51,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (selectedMarker != null){
                     selectedMarker.remove();
                 }
-                selectedMarker = mMap.addMarker(new MarkerOptions().position(selectedPos).title("NEW POINT"));
+                selectedMarker = mMap.addMarker(new MarkerOptions().position(selectedPos).title("Your position"));
                 btnValidate.setEnabled(true);
             }
         });
@@ -68,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 btnSetPosition.setVisibility(View.INVISIBLE);
                 btnValidate.setVisibility(View.INVISIBLE);
+                ShowAllMarkers();
 
             }
         });
@@ -96,5 +100,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //LatLng sydney = new LatLng(-34, 151);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+
+    public void ShowAllMarkers (){
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        //the include method will calculate the min and max bound.
+        builder.include(selectedPos);
+        builder.include(targetPos);
+
+        LatLngBounds bounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.05); // offset from edges of the map 10% of screen
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+        mMap.animateCamera(cu);
     }
 }
