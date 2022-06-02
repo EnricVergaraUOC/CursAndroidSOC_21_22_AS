@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -61,7 +62,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnValidate = findViewById(R.id.btn_validate);
         btnValidate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET"));
+                mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET").icon(BitmapDescriptorFactory.fromResource(R.drawable.flag)));
+
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
 
                 txtQuestion.setText("Distance is: " + df.format(distance) +" km");
