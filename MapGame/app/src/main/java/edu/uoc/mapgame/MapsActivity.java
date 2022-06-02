@@ -17,10 +17,13 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.text.DecimalFormat;
+
 import edu.uoc.mapgame.databinding.ActivityMapsBinding;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private Button btnValidate;
@@ -49,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     selectedMarker.remove();
                 }
                 selectedMarker = mMap.addMarker(new MarkerOptions().position(selectedPos).title("NEW POINT"));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                btnValidate.setEnabled(true);
             }
         });
         btnValidate = findViewById(R.id.btn_validate);
@@ -57,14 +60,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET"));
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
-                txtQuestion.setText("Distance is: " + distance +" km");
+
+                txtQuestion.setText("Distance is: " + df.format(distance) +" km");
                 Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
                         .clickable(true)
                         .add(targetPos, selectedPos));
 
+                btnSetPosition.setVisibility(View.INVISIBLE);
+                btnValidate.setVisibility(View.INVISIBLE);
 
             }
         });
+        btnValidate.setEnabled(false);
         txtQuestion = findViewById(R.id.txtQuestion);
         txtQuestion.setText("Where is Sidney?");
         targetPos = new LatLng(-34, 151);
