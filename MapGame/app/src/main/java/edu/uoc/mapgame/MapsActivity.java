@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import edu.uoc.mapgame.databinding.ActivityMapsBinding;
 
@@ -33,12 +34,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button btnValidate;
     private Button btnSetPosition;
     private TextView txtQuestion;
+    private Button btn_Next;
     LatLng selectedPos;
-    LatLng targetPos;
+
     Marker selectedMarker = null;
+    int currentQuiz = -1;
+    ArrayList<Quiz> quizArrayList = new ArrayList<Quiz>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //----------------
+        //For testing purposes:
+        quizArrayList.add(new Quiz("Where is Barcelona",2.205967369580916,41.49053769125906));
+        quizArrayList.add(new Quiz("Where is Paris",2.3448274873948223, 48.862449322836355));
+        //----------------
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -62,6 +73,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnValidate = findViewById(R.id.btn_validate);
         btnValidate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                double lon = quizArrayList.get(currentQuiz).lon;
+                double lat = quizArrayList.get(currentQuiz).lat;
+                LatLng targetPos = new LatLng(lat,lon);
                 mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET").icon(BitmapDescriptorFactory.fromResource(R.drawable.flag)));
 
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
@@ -74,13 +88,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 btnSetPosition.setVisibility(View.INVISIBLE);
                 btnValidate.setVisibility(View.INVISIBLE);
                 ShowAllMarkers();
+                btn_Next.setVisibility(View.VISIBLE);
 
             }
         });
         btnValidate.setEnabled(false);
         txtQuestion = findViewById(R.id.txtQuestion);
-        txtQuestion.setText("Where is Sidney?");
-        targetPos = new LatLng(-34, 151);
+        btn_Next = findViewById(R.id.btn_Next);
+        btn_Next.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                PrepareNextQuestion();
+            }
+        });
+        PrepareNextQuestion();
     }
 
     /**
@@ -95,18 +115,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
 
     public void ShowAllMarkers (){
-
+        double lon = quizArrayList.get(currentQuiz).lon;
+        double lat = quizArrayList.get(currentQuiz).lat;
+        LatLng targetPos = new LatLng(lat,lon);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         //the include method will calculate the min and max bound.
@@ -122,5 +139,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
         mMap.animateCamera(cu);
+    }
+
+
+    public void PrepareNextQuestion(){
+        btn_Next.setVisibility(View.INVISIBLE);
+        currentQuiz++;
+        btnValidate.setVisibility(View.VISIBLE);
+        btnValidate.setEnabled(true);
+        btnSetPosition.setVisibility(View.VISIBLE);
+        btnSetPosition.setEnabled(true);
+        txtQuestion.setText(quizArrayList.get(currentQuiz).description);
+
     }
 }
