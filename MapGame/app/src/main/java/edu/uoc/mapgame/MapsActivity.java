@@ -38,7 +38,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng selectedPos;
 
     Marker selectedMarker = null;
+    Marker target = null;
+    Polyline polyline = null;
     int currentQuiz = -1;
+
     ArrayList<Quiz> quizArrayList = new ArrayList<Quiz>();
 
 
@@ -76,12 +79,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double lon = quizArrayList.get(currentQuiz).lon;
                 double lat = quizArrayList.get(currentQuiz).lat;
                 LatLng targetPos = new LatLng(lat,lon);
-                mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET").icon(BitmapDescriptorFactory.fromResource(R.drawable.flag)));
+                target = mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET").icon(BitmapDescriptorFactory.fromResource(R.drawable.flag)));
 
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
 
                 txtQuestion.setText("Distance is: " + df.format(distance) +" km");
-                Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                polyline = mMap.addPolyline(new PolylineOptions()
                         .clickable(true)
                         .add(targetPos, selectedPos));
 
@@ -143,6 +146,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void PrepareNextQuestion(){
+
+        if (currentQuiz != -1){
+            if (target!= null){
+                target.remove();
+                target = null;
+            }
+            if (selectedMarker != null){
+                selectedMarker.remove();
+                selectedMarker = null;
+            }
+            if (polyline != null){
+                polyline.remove();
+                polyline = null;
+            }
+        }
         btn_Next.setVisibility(View.INVISIBLE);
         currentQuiz++;
         btnValidate.setVisibility(View.VISIBLE);
