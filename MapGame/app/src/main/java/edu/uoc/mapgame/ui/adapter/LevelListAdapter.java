@@ -1,6 +1,7 @@
 package edu.uoc.mapgame.ui.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +48,25 @@ public class LevelListAdapter extends RecyclerView.Adapter<LevelListAdapter.View
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent k = new Intent(activityContext, MapsActivity.class);
-                //k.putExtra("tripInfo",myListData);
-                activityContext.startActivity(k);
+                if (myListData.unlocked){
+                    Intent k = new Intent(activityContext, MapsActivity.class);
+                    //k.putExtra("tripInfo",myListData);
+                    activityContext.startActivity(k);
+                }else{
+                    new android.app.AlertDialog.Builder(activityContext)
+                            .setTitle(myListData.name + " is locked")
+                            .setMessage("You need to unlocked the previous leves before to start this level")
+
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //Nothing to do
+                                }
+                            })
+
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+
             }
         });
     }
