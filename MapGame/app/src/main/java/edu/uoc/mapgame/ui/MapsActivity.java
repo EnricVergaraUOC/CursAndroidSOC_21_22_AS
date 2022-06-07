@@ -1,7 +1,8 @@
-package edu.uoc.mapgame;
+package edu.uoc.mapgame.ui;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,9 @@ import com.google.maps.android.SphericalUtil;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import edu.uoc.mapgame.R;
 import edu.uoc.mapgame.databinding.ActivityMapsBinding;
+import edu.uoc.mapgame.model.Quiz;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -167,16 +170,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
+        if (currentQuiz == quizArrayList.size()-1){
+            //Game finished.
+            new android.app.AlertDialog.Builder(MapsActivity.this)
+                    .setTitle("Round Finished")
+                    .setMessage("Total distance is:  " +df.format(totalDistance) +" km")
+
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Nothing to do
+                        }
+                    })
+
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }else{
+            txtTotalDistance.setText("Total Distance: " + df.format(totalDistance) +" km");
+            btn_Next.setVisibility(View.INVISIBLE);
+            currentQuiz++;
+            btnValidate.setVisibility(View.VISIBLE);
+            btnValidate.setEnabled(true);
+            btnSetPosition.setVisibility(View.VISIBLE);
+            btnSetPosition.setEnabled(true);
+            txtQuestion.setText(quizArrayList.get(currentQuiz).description);
+        }
 
 
-        txtTotalDistance.setText("Total Distance: " + df.format(totalDistance) +" km");
-        btn_Next.setVisibility(View.INVISIBLE);
-        currentQuiz++;
-        btnValidate.setVisibility(View.VISIBLE);
-        btnValidate.setEnabled(true);
-        btnSetPosition.setVisibility(View.VISIBLE);
-        btnSetPosition.setEnabled(true);
-        txtQuestion.setText(quizArrayList.get(currentQuiz).description);
 
     }
 }
