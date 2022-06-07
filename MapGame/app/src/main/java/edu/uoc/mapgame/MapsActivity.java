@@ -34,8 +34,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button btnValidate;
     private Button btnSetPosition;
     private TextView txtQuestion;
+    private TextView txtTotalDistance;
     private Button btn_Next;
     LatLng selectedPos;
+    float totalDistance = 0.0f;
 
     Marker selectedMarker = null;
     Marker target = null;
@@ -83,7 +85,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Double distance = SphericalUtil.computeDistanceBetween(targetPos, selectedPos)/1000;
 
-                txtQuestion.setText("Distance is: " + df.format(distance) +" km");
+                txtQuestion.setText("Distance between target and selected: " + df.format(distance) +" km");
+                totalDistance += distance;
+                txtTotalDistance.setText("Total Distance: " + df.format(totalDistance) +" km");
                 polyline = mMap.addPolyline(new PolylineOptions()
                         .clickable(true)
                         .add(targetPos, selectedPos));
@@ -97,6 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         btnValidate.setEnabled(false);
         txtQuestion = findViewById(R.id.txtQuestion);
+        txtTotalDistance = findViewById(R.id.textTotalDistance);
         btn_Next = findViewById(R.id.btn_Next);
         btn_Next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -161,6 +166,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 polyline = null;
             }
         }
+
+
+
+        txtTotalDistance.setText("Total Distance: " + df.format(totalDistance) +" km");
         btn_Next.setVisibility(View.INVISIBLE);
         currentQuiz++;
         btnValidate.setVisibility(View.VISIBLE);

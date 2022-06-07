@@ -6,25 +6,38 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_setPos"
-        android:layout_width="120dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="36dp"
-        android:text="Set Position"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
-
-    <Button
         android:id="@+id/btn_validate"
         android:layout_width="122dp"
         android:layout_height="54dp"
         android:layout_marginStart="9dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="76dp"
         android:text="Validate"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toEndOf="@+id/btn_setPos"
+        app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
+
+    <Button
+        android:id="@+id/btn_Next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:layout_constraintBottom_toTopOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtQuestion"
+        app:layout_constraintVertical_bias="0.176" />
+
+    <Button
+        android:id="@+id/btn_setPos"
+        android:layout_width="120dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="16dp"
+        android:text="Set Position"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtQuestion" />
 
     <fragment
@@ -41,14 +54,15 @@
 
     <TextView
         android:id="@+id/txtQuestion"
-        android:layout_width="417dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="409dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textTotalDistance" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -60,17 +74,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
-    <Button
-        android:id="@+id/btn_Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        app:layout_constraintBottom_toTopOf="@+id/map"
+    <TextView
+        android:id="@+id/textTotalDistance"
+        android:layout_width="410dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtQuestion"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
