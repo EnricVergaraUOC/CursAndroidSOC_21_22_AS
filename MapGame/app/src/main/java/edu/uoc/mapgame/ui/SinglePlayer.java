@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,6 +29,7 @@ public class SinglePlayer extends AppCompatActivity {
 
     ArrayList<Level> levels = new ArrayList<Level>();
     LevelListAdapter adapter = null;
+    int lastLevelUnlocked = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +44,35 @@ public class SinglePlayer extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        GetQuizFromFirebase();
-    }
+        GetUserInfoFromFirebase();
 
+    }
+    public void GetUserInfoFromFirebase(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
+        usersRef.whereEqualTo("email", currentUser.getEmail())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String,Object> trip = document.getData();
+                                long kk = (long) trip.get("lastLevelUnlocked");
+                                lastLevelUnlocked = (int) kk;
+                                GetQuizFromFirebase();
+
+                            }
+                        } else {
+                            String msg_error = task.getException().toString();
+                            //ShowErrorMessage(msg_error);
+                        }
+                    }
+                });
+    }
 
     public void GetQuizFromFirebase(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,12 +83,19 @@ public class SinglePlayer extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            levels.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> data = document.getData();
                                 List<Map<String, Object> > data_levels = (List<Map<String, Object> >) data.get("levels");
+                                int index = 0;
                                 for (Map<String, Object> level: data_levels) {
                                     String description = (String) level.get("description");
-                                    Level newLevel = new Level(description, true);
+                                    boolean unlocked = false;
+                                    if (index <= lastLevelUnlocked){
+                                        unlocked = true;
+                                    }
+                                    index++;
+                                    Level newLevel = new Level(description, unlocked);
                                     List<Map<String, Object> > questions = (List<Map<String, Object>>) level.get("questions");
                                     for (Map<String, Object> question: questions) {
                                         String quiz_description = (String) question.get("description");
