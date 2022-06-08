@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "279383592886",
+    "project_id": "mapgame-352014",
+    "storage_bucket": "mapgame-352014.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279383592886:android:0bef62455390731ba87b17",
+        "android_client_info": {
+          "package_name": "edu.uoc.mapgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279383592886-0suiso1aerm3vh4fpobo62uson71e45l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0I6-M4a9lMFwU57DG_hb-x3MEZnHNOQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279383592886-0suiso1aerm3vh4fpobo62uson71e45l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
