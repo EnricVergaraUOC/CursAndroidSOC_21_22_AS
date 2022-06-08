@@ -80,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void CreateNewUser(){
         Map<String, Object> user = new HashMap<>();
         user.put("email", inputUserName.getText().toString());
+        user.put("lastLevelUnlocked", 0);
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
