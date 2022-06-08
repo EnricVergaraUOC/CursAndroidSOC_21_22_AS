@@ -1,5 +1,7 @@
 package edu.uoc.mapgame.ui;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.DialogInterface;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,13 +23,28 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.SphericalUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.uoc.mapgame.R;
 import edu.uoc.mapgame.databinding.ActivityMapsBinding;
+import edu.uoc.mapgame.model.Level;
 import edu.uoc.mapgame.model.Quiz;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -53,11 +71,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         //----------------
         //For testing purposes:
         quizArrayList.add(new Quiz("Where is Barcelona",2.205967369580916,41.49053769125906));
         quizArrayList.add(new Quiz("Where is Paris",2.3448274873948223, 48.862449322836355));
         //----------------
+        */
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -112,6 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         PrepareNextQuestion();
+
     }
 
     /**
@@ -198,4 +219,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+
 }

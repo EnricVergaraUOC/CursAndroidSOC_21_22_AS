@@ -10,6 +10,7 @@ public class Level {
     public Level (String name, boolean unlocked){
         this.name = name;
         this.unlocked = unlocked;
+        quizzes = new ArrayList<Quiz>();
     }
 
 }
