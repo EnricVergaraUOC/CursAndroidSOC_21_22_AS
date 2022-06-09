@@ -65,12 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Polyline polyline = null;
     int currentQuiz = -1;
 
-    ArrayList<Quiz> quizArrayList = new ArrayList<Quiz>();
+    Level currentLevel = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         /*
         //----------------
         //For testing purposes:
@@ -87,6 +90,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        currentLevel = getIntent().getParcelableExtra("levelInfo");
+
         btnSetPosition = findViewById(R.id.btn_setPos);
         btnSetPosition.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -101,8 +106,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnValidate = findViewById(R.id.btn_validate);
         btnValidate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                double lon = quizArrayList.get(currentQuiz).lon;
-                double lat = quizArrayList.get(currentQuiz).lat;
+                double lon = currentLevel.quizzes.get(currentQuiz).lon;
+                double lat = currentLevel.quizzes.get(currentQuiz).lat;
                 LatLng targetPos = new LatLng(lat,lon);
                 target = mMap.addMarker(new MarkerOptions().position(targetPos).title("TARGET").icon(BitmapDescriptorFactory.fromResource(R.drawable.flag)));
 
@@ -153,8 +158,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void ShowAllMarkers (){
-        double lon = quizArrayList.get(currentQuiz).lon;
-        double lat = quizArrayList.get(currentQuiz).lat;
+        double lon = currentLevel.quizzes.get(currentQuiz).lon;
+        double lat = currentLevel.quizzes.get(currentQuiz).lat;
         LatLng targetPos = new LatLng(lat,lon);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -191,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-        if (currentQuiz == quizArrayList.size()-1){
+        if (currentQuiz == currentLevel.quizzes.size()-1){
             //Game finished.
             new android.app.AlertDialog.Builder(MapsActivity.this)
                     .setTitle("Round Finished")
@@ -213,12 +218,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             btnValidate.setEnabled(true);
             btnSetPosition.setVisibility(View.VISIBLE);
             btnSetPosition.setEnabled(true);
-            txtQuestion.setText(quizArrayList.get(currentQuiz).description);
+            txtQuestion.setText(currentLevel.quizzes.get(currentQuiz).description);
         }
 
 
 
     }
+
 
 
 }

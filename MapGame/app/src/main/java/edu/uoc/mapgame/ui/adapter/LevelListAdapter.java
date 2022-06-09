@@ -50,7 +50,7 @@ public class LevelListAdapter extends RecyclerView.Adapter<LevelListAdapter.View
             public void onClick(View view) {
                 if (myListData.unlocked){
                     Intent k = new Intent(activityContext, MapsActivity.class);
-                    //k.putExtra("tripInfo",myListData);
+                    k.putExtra("levelInfo",myListData);
                     activityContext.startActivity(k);
                 }else{
                     new android.app.AlertDialog.Builder(activityContext)
