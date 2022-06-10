@@ -74,13 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-        /*
-        //----------------
-        //For testing purposes:
-        quizArrayList.add(new Quiz("Where is Barcelona",2.205967369580916,41.49053769125906));
-        quizArrayList.add(new Quiz("Where is Paris",2.3448274873948223, 48.862449322836355));
-        //----------------
-        */
+
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -90,7 +84,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            currentLevel = (Level) getIntent().getSerializableExtra("levelInfo");
+        }
         currentLevel = getIntent().getParcelableExtra("levelInfo");
+
+
+        //getActionBar().setTitle("Level: "+currentLevel.name);
+
 
         btnSetPosition = findViewById(R.id.btn_setPos);
         btnSetPosition.setOnClickListener(new View.OnClickListener() {
@@ -198,13 +200,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (currentQuiz == currentLevel.quizzes.size()-1){
             //Game finished.
+            String msg_pass = "Congratulations you can go to the next level!";
+            String msg_fail = "Sorry, you have to repeat the level with distance less than 2000 km";
+            String msg = "";
+            if (totalDistance < 2000){
+                msg = msg_pass;
+                //TODO Connection to save this on Firebase
+            }else{
+                msg = msg_fail;
+            }
             new android.app.AlertDialog.Builder(MapsActivity.this)
                     .setTitle("Round Finished")
-                    .setMessage("Total distance is:  " +df.format(totalDistance) +" km")
+                    .setMessage("Total distance is:  " +df.format(totalDistance) +" km.\n" + msg)
 
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            //Nothing to do
+                            finish();
                         }
                     })
 
