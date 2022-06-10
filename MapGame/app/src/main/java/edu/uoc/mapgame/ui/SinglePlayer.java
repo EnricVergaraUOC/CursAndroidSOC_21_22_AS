@@ -1,18 +1,23 @@
 package edu.uoc.mapgame.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,34 +49,44 @@ public class SinglePlayer extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        GetUserInfoFromFirebase();
+        ListeningUserInfoFromFirebase();
 
     }
-    public void GetUserInfoFromFirebase(){
+
+
+    public void ListeningUserInfoFromFirebase(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("users");
-        usersRef.whereEqualTo("email", currentUser.getEmail())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String,Object> trip = document.getData();
-                                long kk = (long) trip.get("lastLevelUnlocked");
-                                lastLevelUnlocked = (int) kk;
-                                GetQuizFromFirebase();
+        usersRef.whereEqualTo("email", currentUser.getEmail()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error!=null){
+                    Toast.makeText(SinglePlayer.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for(DocumentChange doc:value.getDocumentChanges()){
+                    if (doc.getType()==DocumentChange.Type.ADDED){
+                        Map<String,Object> trip = doc.getDocument().getData();
 
-                            }
-                        } else {
-                            String msg_error = task.getException().toString();
-                            //ShowErrorMessage(msg_error);
-                        }
+                        long kk = (long) trip.get("lastLevelUnlocked");
+                        lastLevelUnlocked = (int) kk;
+                        GetQuizFromFirebase();
+
+
+                    }else if (doc.getType()==DocumentChange.Type.MODIFIED){
+                        Map<String,Object> trip = doc.getDocument().getData();
+                        long kk = (long) trip.get("lastLevelUnlocked");
+                        lastLevelUnlocked = (int) kk;
+                        GetQuizFromFirebase();
+
                     }
-                });
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void GetQuizFromFirebase(){
