@@ -29,7 +29,7 @@ public class SinglePlayer extends AppCompatActivity {
 
     ArrayList<Level> levels = new ArrayList<Level>();
     LevelListAdapter adapter = null;
-    int lastLevelUnlocked = 0;
+    public int lastLevelUnlocked = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,14 +17,15 @@ import java.util.ArrayList;
 import edu.uoc.mapgame.R;
 import edu.uoc.mapgame.model.Level;
 import edu.uoc.mapgame.ui.MapsActivity;
+import edu.uoc.mapgame.ui.SinglePlayer;
 
 public class LevelListAdapter extends RecyclerView.Adapter<LevelListAdapter.ViewHolder>{
     private ArrayList<Level> listData;
-    private Context activityContext;
+    private SinglePlayer activity;
     // RecyclerView recyclerView;
-    public LevelListAdapter(ArrayList<Level> listData, Context context) {
+    public LevelListAdapter(ArrayList<Level> listData, SinglePlayer context) {
         this.listData = listData;
-        this.activityContext = context;
+        this.activity = context;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,11 +50,14 @@ public class LevelListAdapter extends RecyclerView.Adapter<LevelListAdapter.View
             @Override
             public void onClick(View view) {
                 if (myListData.unlocked){
-                    Intent k = new Intent(activityContext, MapsActivity.class);
+                    Intent k = new Intent(activity, MapsActivity.class);
                     k.putExtra("levelInfo",myListData);
-                    activityContext.startActivity(k);
+                    k.putExtra("lastLevelUnlocked",activity.lastLevelUnlocked);
+                    k.putExtra("indexCurrentLevel",position);
+
+                    activity.startActivity(k);
                 }else{
-                    new android.app.AlertDialog.Builder(activityContext)
+                    new android.app.AlertDialog.Builder(activity)
                             .setTitle(myListData.name + " is locked")
                             .setMessage("You need to unlocked the previous leves before to start this level")
 
