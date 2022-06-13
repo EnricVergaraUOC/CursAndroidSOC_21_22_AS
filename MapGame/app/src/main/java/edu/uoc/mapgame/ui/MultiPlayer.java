@@ -7,16 +7,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +60,7 @@ public class MultiPlayer extends AppCompatActivity {
             public void onClick(View v) {
                 boolean allOk = CheckServerName();
                 if (allOk){
-
+                    JoinToServer();
                 }
             }
         });
@@ -118,5 +125,58 @@ public class MultiPlayer extends AppCompatActivity {
                         //ShowErrorMessage(error);
                     }
                 });
+    }
+
+    public void JoinToServer(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("Multiplayer");
+
+        usersRef.whereEqualTo("id", lblServerName.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                AddNewPlayer(document.getId());
+                            }
+                        } else {
+                            String msg_error = task.getException().toString();
+                            Log.w("TripListActivity", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+    public void AddNewPlayer(String docID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference party = db.collection("Multiplayer").document(docID);
+        // Atomically add a new region to the "regions" array field.
+
+        Map<String, Object> newPlayer = new HashMap<>();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        newPlayer.put("email", currentUser.getEmail());
+        newPlayer.put("score", 0);
+
+        party.update("players", FieldValue.arrayUnion(newPlayer))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Intent k = new Intent(MultiPlayer.this, WaitingRoom.class);
+                        k.putExtra("ServerName", lblServerName.getText().toString());
+                        k.putExtra("CreateServer", false);
+                        startActivity(k);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("KAKA", "Error updating document", e);
+                    }
+                });
+
+
     }
 }
