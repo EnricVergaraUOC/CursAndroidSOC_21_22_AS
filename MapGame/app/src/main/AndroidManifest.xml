@@ -16,18 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MapGame">
         <activity
+            android:name=".ui.WaitingRoom"
+            android:exported="false" />
+        <activity
             android:name=".ui.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.MultiPlayer"
             android:exported="false" />
@@ -36,9 +38,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
