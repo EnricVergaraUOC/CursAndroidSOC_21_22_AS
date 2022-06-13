@@ -97,8 +97,6 @@ public class MultiPlayer extends AppCompatActivity {
         newParty.put("players", players);
 
 
-
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add a new document with a generated ID
         db.collection("Multiplayer")
@@ -107,6 +105,10 @@ public class MultiPlayer extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         //Go to WaitingRoom
+                        Intent k = new Intent(MultiPlayer.this, WaitingRoom.class);
+                        k.putExtra("ServerName", lblServerName.getText().toString());
+                        k.putExtra("CreateServer", true);
+                        startActivity(k);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
