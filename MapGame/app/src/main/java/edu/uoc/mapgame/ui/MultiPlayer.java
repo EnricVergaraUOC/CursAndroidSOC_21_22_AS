@@ -91,13 +91,13 @@ public class MultiPlayer extends AppCompatActivity {
 
         Map<String, Object> newParty = new HashMap<>();
         newParty.put("id", lblServerName.getText().toString());
-        newParty.put("readyToNextQuestion", false);
-        newParty.put("currentQuestion", 0);
+        newParty.put("readyToNextQuestion", 0);
         Map<String, Object> newPlayer = new HashMap<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         newPlayer.put("email", currentUser.getEmail());
         newPlayer.put("score", 0);
+        newPlayer.put("currentQuestion", 1);
 
         List<Object> players = new ArrayList<Object>();
         players.add(newPlayer);
@@ -158,6 +158,7 @@ public class MultiPlayer extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         newPlayer.put("email", currentUser.getEmail());
         newPlayer.put("score", 0);
+        newPlayer.put("currentQuestion", 1);
 
         party.update("players", FieldValue.arrayUnion(newPlayer))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
